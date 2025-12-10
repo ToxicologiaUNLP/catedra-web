@@ -17,72 +17,81 @@
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
-      background: #f9f9f9;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding-top: 40px;
+      align-items: center;
+      background: linear-gradient(135deg, #40c4c4, #80e0e0);
     }
 
     .container {
-      background: #ffffff;
-      width: 92%;
-      max-width: 430px;
+      background: rgba(255,255,255,0.95);
+      width: 95%;
+      max-width: 480px;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
       text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .container:hover {
+      transform: translateY(-2px);
     }
 
     .logo {
       width: 100%;
-      max-width: 260px;
-      margin-bottom: 25px;
+      height: auto;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    /* Botones principales */
-    .btn {
+    .btn, .subbtn {
       display: block;
       width: 100%;
-      background: #2d8390;
-      color: white;
       padding: 16px;
       margin: 12px 0;
-      border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 17px;
       font-weight: 600;
       cursor: pointer;
       text-decoration: none;
-      transition: 0.25s;
+      transition: all 0.3s ease;
+      text-align: center;
     }
-    .btn:hover { opacity: 0.9; }
 
-    /* Subbotones */
+    .btn {
+      background: #2d8390;
+      color: #fff;
+      border: none;
+    }
+
+    .btn:hover {
+      background: #24666d;
+      transform: translateY(-2px);
+    }
+
     .subbtn {
-      display: block;
-      width: 100%;
-      background: white;
-      color: black;
-      padding: 13px;
-      margin: 8px 0;
-      border: 2px solid black;
-      border-radius: 8px;
+      background: #ffffff;
+      color: #2d8390;
+      border: 2px solid #2d8390;
       font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: 0.25s;
     }
-    .subbtn:hover { background: #efefef; }
 
-    /* Animación */
+    .subbtn:hover {
+      background: #e0f7f7;
+      transform: translateY(-1px);
+    }
+
     .collapsible {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s ease;
     }
+
     .visible {
-      max-height: 500px;
+      max-height: 600px;
     }
 
     .datos {
@@ -91,13 +100,13 @@
       color: #000;
       line-height: 1.5;
       display: none;
+      text-align: left;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-
     <img src="logo.png" alt="Logo" class="logo">
 
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">
@@ -139,7 +148,6 @@
       </div>
 
     </div>
-
   </div>
 
   <script>
@@ -169,7 +177,5 @@
       if (e.key === "Escape") closeAll();
     });
   </script>
-
 </body>
 </html>
-
