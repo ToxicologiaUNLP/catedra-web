@@ -8,10 +8,6 @@
   <link rel="icon" href="logo2.png" type="image/png" />
 
   <style>
-    :root {
-      --logo-width: 100%; /* esto se actualiza con JS */
-    }
-
     body, html {
       margin: 0;
       padding: 0;
@@ -58,9 +54,9 @@
       border-radius: 12px;
     }
 
+    /* BOTONES PRINCIPALES (todos del mismo ancho que Contacto) */
     .btn {
       width: 100%;
-      max-width: var(--logo-width); /* ← NUEVO: igual ancho que logo */
       padding: 16px;
       margin: 10px 0;
       font-size: 17px;
@@ -80,6 +76,7 @@
       transform: translateY(-2px);
     }
 
+    /* SUBBOTONES (ancho del texto centrado) */
     .subbtn {
       display: inline-block;
       width: auto;
@@ -137,8 +134,8 @@
 
     @media screen and (max-width: 480px) {
       main {
-        max-width: 350px; /* un poquito más angosto en mobile */
-        padding: 22px;
+        max-width: 90%;
+        padding: 20px;
       }
     }
   </style>
@@ -147,7 +144,7 @@
   <div class="fecha" id="fecha"></div>
 
   <main>
-    <img src="logo.png" alt="Logo" class="logo" id="logo">
+    <img src="logo.png" alt="Logo" class="logo">
 
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
     <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
@@ -162,8 +159,8 @@
         <p><strong>Dirección:</strong><br>
         Anexo Calle 7 Nº1523 – FCM – UNLP</p>
         <p><strong>Email:</strong><br>
-        toxicologia@med.unlp.edu.ar (asuntos administrativos)<br>
-        toxicoalumnos@gmail.com (asuntos académicos)</p>
+        toxicologia@med.unlp.edu.ar (administrativo)<br>
+        toxicoalumnos@gmail.com (académico)</p>
       </div>
     </div>
   </main>
@@ -177,15 +174,6 @@
     const fechaDiv = document.getElementById('fecha');
     const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
     fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
-
-    // Igualar ancho del logo a los botones
-    const logo = document.getElementById("logo");
-    function actualizarAnchoLogo() {
-      const ancho = logo.clientWidth + "px";
-      document.documentElement.style.setProperty("--logo-width", ancho);
-    }
-    actualizarAnchoLogo();
-    window.addEventListener("resize", actualizarAnchoLogo);
 
     // Funciones colapsables
     const contactoBox = document.getElementById('contactoBox');
@@ -210,6 +198,3 @@
   </script>
 </body>
 </html>
-
-
-
