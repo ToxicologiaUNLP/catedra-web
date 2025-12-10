@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cátedra de Toxicología - Menú Institucional</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo2.png" type="image/png" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      padding-top: 40px;
+    }
+
+    .container {
+      background: #ffffff;
+      width: 92%;
+      max-width: 430px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 260px;
+      margin-bottom: 25px;
+    }
+
+    /* Botones principales */
+    .btn {
+      display: block;
+      width: 100%;
+      background: #2d8390;
+      color: white;
+      padding: 16px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Subbotones */
+    .subbtn {
+      display: block;
+      width: 100%;
+      background: white;
+      color: #000;
+      padding: 13px;
+      margin: 8px 0;
+      border: 2px solid black;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+
+    .subbtn:hover {
+      background: #efefef;
+    }
+
+    /* Animación desplegable */
+    .collapsible {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+
+    .visible {
+      max-height: 500px;
+    }
+
+    .datos {
+      margin-top: 12px;
+      font-size: 15px;
+      color: #000;
+      line-height: 1.5;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <img src="logo.png" alt="Logo" class="logo">
+
+    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
+    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
+
+    <button class="btn" onclick="toggleContacto()" aria-expanded="false">
+      Contacto
+    </button>
+
+    <div id="contactoBox" class="collapsible">
+
+      <a class="subbtn" target="_blank"
+         href="https://cartelera.med.unlp.edu.ar/catedra/10">
+         Cartelera Virtual
+      </a>
+
+      <a class="subbtn" target="_blank"
+         href="https://educativa.med.unlp.edu.ar/login/index.php">
+         Entorno Educativo
+      </a>
+
+      <button class="subbtn" onclick="toggleDatos()">
+        Cátedra de Toxicología
+      </button>
+
+      <div id="datosCatedra" class="datos">
+        <p><strong>Dirección:</strong><br>
+        Anexo Calle 7 Nº1523 – FCM – UNLP</p>
+
+        <p><strong>Email:</strong><br>
+        toxicologia@med.unlp.edu.ar (administrativos)<br>
+        toxicoalumnos@gmail.com (académicos)</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function closeAll() {
+      document.getElementById('contactoBox').classList.remove('visible');
+      document.getElementById('datosCatedra').style.display = 'none';
+    }
+
+    function toggleContacto() {
+      closeAll();
+      const box = document.getElementById('contactoBox');
+      const expanded = box.classList.toggle('visible');
+      document.querySelector('[onclick="toggleContacto()"]')
+        .setAttribute("aria-expanded", expanded);
+    }
+
+    function toggleDatos() {
+      const datos = document.getElementById('datosCatedra');
+      datos.style.display = datos.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeAll();
+    });
+  </script>
+
+</body>
+</html>
