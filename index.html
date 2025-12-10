@@ -5,172 +5,179 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cátedra de Toxicología - Menú Institucional</title>
 
-  <!-- Anti-cache -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-
   <!-- Favicon -->
   <link rel="icon" href="logo2.png" type="image/png" />
 
   <style>
-    body {
+    /* Reset y tipografía */
+    body, html {
       margin: 0;
+      padding: 0;
       font-family: "Segoe UI", Arial, sans-serif;
-      min-height: 100vh;
+      height: 100%;
+      background: linear-gradient(135deg, #087882, #04545d);
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Fondo institucional fuerte con degradado turquesa */
-      background: linear-gradient(135deg, #007f7f, #00b3b3);
     }
 
-    .container {
-      background: rgba(255,255,255,0.95);
+    main {
+      background: #c6d5da; /* fondo claro para contraste */
+      border-radius: 20px;
       width: 95%;
       max-width: 480px;
       padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       text-align: center;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
+    /* Logo ocupa todo el ancho del main */
     .logo {
       width: 100%;
       height: auto;
       margin-bottom: 30px;
       display: block;
+      border-radius: 12px;
     }
 
-    .btn, .subbtn {
-      display: block;
+    /* Botones principales */
+    .btn {
       width: 100%;
       padding: 16px;
-      margin: 12px 0;
-      border-radius: 12px;
+      margin: 10px 0;
       font-size: 17px;
       font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .btn {
-      background: #004d4d;
       color: #fff;
+      background-color: #0c8c9c;
       border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
     }
-
     .btn:hover {
-      background: #003333;
+      background-color: #045c63;
       transform: translateY(-2px);
     }
 
+    /* Subbotones */
     .subbtn {
-      background: #ffffff;
-      color: #004d4d;
-      border: 2px solid #004d4d;
+      width: 90%;
+      max-width: 350px;
+      padding: 14px;
+      margin: 8px auto;
       font-size: 15px;
+      font-weight: 600;
+      color: #04545d;
+      background-color: #c6d5da;
+      border: 2px solid #04545d;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+      transition: all 0.25s;
     }
-
     .subbtn:hover {
-      background: #e6f7f7;
+      background-color: #608b92;
+      color: #fff;
       transform: translateY(-1px);
     }
 
+    /* Contenedores colapsables */
     .collapsible {
+      width: 100%;
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s ease;
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-
     .visible {
-      max-height: 600px;
+      max-height: 800px;
     }
 
     .datos {
       margin-top: 12px;
       font-size: 15px;
-      color: #000;
+      color: #04545d;
       line-height: 1.5;
       display: none;
-      text-align: left;
+      text-align: center; /* texto centrado */
+    }
+
+    /* Botón volver */
+    .btn-back {
+      display: none;
+      width: 50%;
+      padding: 12px;
+      margin: 15px auto;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background-color: #04545d;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-back:hover {
+      background-color: #045c63;
+      transform: translateY(-1px);
     }
 
   </style>
 </head>
-
 <body>
-  <div class="container">
+  <main>
     <img src="logo.png" alt="Logo" class="logo">
 
-    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">
-      Asistencia y Calificaciones
-    </a>
-
-    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">
-      Inscripciones
-    </a>
-
-    <button class="btn" onclick="toggleContacto()">
-      Contacto
-    </button>
+    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
+    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
+    <button class="btn" onclick="toggleContacto()">Contacto</button>
 
     <div id="contactoBox" class="collapsible">
-
-      <a class="subbtn" target="_blank"
-         href="https://cartelera.med.unlp.edu.ar/catedra/10">
-         Cartelera Virtual
-      </a>
-
-      <a class="subbtn" target="_blank"
-         href="https://educativa.med.unlp.edu.ar/login/index.php">
-         Entorno Educativo
-      </a>
-
-      <button class="subbtn" onclick="toggleDatos()">
-        Cátedra de Toxicología
-      </button>
+      <a class="subbtn" target="_blank" href="https://cartelera.med.unlp.edu.ar/catedra/10">Cartelera Virtual</a>
+      <a class="subbtn" target="_blank" href="https://educativa.med.unlp.edu.ar/login/index.php">Entorno Educativo</a>
+      <button class="subbtn" onclick="toggleDatos()">Cátedra de Toxicología</button>
 
       <div id="datosCatedra" class="datos">
         <p><strong>Dirección:</strong><br>
         Anexo Calle 7 Nº1523 – FCM – UNLP</p>
-
-        <p><strong>Correos electrónicos:</strong><br>
-        toxicologia@med.unlp.edu.ar (asuntos administrativos)<br>
-        toxicoalumnos@gmail.com (asuntos académicos)
-        </p>
+        <p><strong>Email:</strong><br>
+        toxicologia@med.unlp.edu.ar (administrativos)<br>
+        toxicoalumnos@gmail.com (académicos)</p>
       </div>
-
     </div>
-  </div>
+
+    <button id="btnBack" class="btn-back" onclick="closeAll()">Volver</button>
+  </main>
 
   <script>
-    function closeAll() {
-      document.getElementById('contactoBox').classList.remove('visible');
-      document.getElementById('datosCatedra').style.display = 'none';
-    }
+    const contactoBox = document.getElementById('contactoBox');
+    const datosCatedra = document.getElementById('datosCatedra');
+    const btnBack = document.getElementById('btnBack');
 
     function toggleContacto() {
-      const box = document.getElementById('contactoBox');
-      const isOpen = box.classList.contains('visible');
-
+      const isOpen = contactoBox.classList.contains('visible');
       closeAll();
-
       if (!isOpen) {
-        box.classList.add('visible');
+        contactoBox.classList.add('visible');
+        btnBack.style.display = 'block';
       }
     }
 
     function toggleDatos() {
-      const datos = document.getElementById('datosCatedra');
-      datos.style.display =
-        datos.style.display === "block" ? "none" : "block";
+      datosCatedra.style.display = datosCatedra.style.display === 'block' ? 'none' : 'block';
+      btnBack.style.display = 'block';
+    }
+
+    function closeAll() {
+      contactoBox.classList.remove('visible');
+      datosCatedra.style.display = 'none';
+      btnBack.style.display = 'none';
     }
 
     document.addEventListener("keydown", e => {
@@ -179,3 +186,4 @@
   </script>
 </body>
 </html>
+
