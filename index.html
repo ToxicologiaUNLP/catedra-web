@@ -5,26 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cátedra de Toxicología - Menú Institucional</title>
 
-  <!-- Favicon -->
   <link rel="icon" href="logo2.png" type="image/png" />
 
   <style>
-    /* Reset y tipografía */
     body, html {
       margin: 0;
       padding: 0;
       font-family: "Segoe UI", Arial, sans-serif;
       height: 100%;
+      /* Fondo difuminado tipo mezcla sutil de la gama de colores */
+      background: linear-gradient(120deg, #087882, #0c8c9c, #045c63, #04545d);
+      background-size: 600% 600%;
+      animation: gradientMove 15s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Fondo institucional más claro y difuminado */
-      background: radial-gradient(circle at center, #0a9a9b 0%, #04545d 100%);
+      position: relative;
+    }
+
+    @keyframes gradientMove {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Fecha en margen superior derecho del fondo */
+    .fecha {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
+      color: #c6d5da;
+      font-weight: 600;
     }
 
     main {
-      position: relative;
-      background: rgba(198, 213, 218, 0.95); /* fondo claro con transparencia */
+      background: rgba(198, 213, 218, 0.95);
       border-radius: 20px;
       width: 95%;
       max-width: 480px;
@@ -36,18 +53,6 @@
       align-items: center;
     }
 
-    /* Fecha en esquina superior derecha */
-    .fecha {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 14px;
-      color: #04545d;
-      font-weight: 600;
-    }
-
-    /* Logo ocupa todo el ancho del main */
     .logo {
       width: 100%;
       height: auto;
@@ -56,10 +61,9 @@
       border-radius: 12px;
     }
 
-    /* Botones principales */
     .btn {
-      display: inline-block;
-      padding: 12px 20px;
+      width: 100%; /* ancho completo */
+      padding: 16px;
       margin: 10px 0;
       font-size: 17px;
       font-weight: 600;
@@ -71,15 +75,15 @@
       transition: all 0.3s;
       text-decoration: none; /* sin subrayado */
     }
+
     .btn:hover {
-      background-color: #045c63;
+      background-color: #04545d;
       transform: translateY(-2px);
     }
 
-    /* Subbotones */
     .subbtn {
-      display: inline-block;
-      padding: 10px 16px;
+      width: 100%; /* ancho completo */
+      padding: 14px;
       margin: 8px 0;
       font-size: 15px;
       font-weight: 600;
@@ -90,15 +94,15 @@
       cursor: pointer;
       text-align: center;
       transition: all 0.25s;
-      text-decoration: none; /* sin subrayado */
+      text-decoration: none;
     }
+
     .subbtn:hover {
       background-color: #608b92;
       color: #fff;
       transform: translateY(-1px);
     }
 
-    /* Contenedores colapsables */
     .collapsible {
       width: 100%;
       max-height: 0;
@@ -108,6 +112,7 @@
       flex-direction: column;
       align-items: center;
     }
+
     .visible {
       max-height: 800px;
     }
@@ -123,9 +128,9 @@
   </style>
 </head>
 <body>
-  <main>
-    <div class="fecha" id="fecha"></div>
+  <div class="fecha" id="fecha"></div>
 
+  <main>
     <img src="logo.png" alt="Logo" class="logo">
 
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
@@ -148,12 +153,12 @@
   </main>
 
   <script>
-    // Mostrar fecha del día
+    // Fecha
     const fechaDiv = document.getElementById('fecha');
     const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
     fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
 
-    // Funciones de colapsables
+    // Funciones colapsables
     const contactoBox = document.getElementById('contactoBox');
     const datosCatedra = document.getElementById('datosCatedra');
 
@@ -176,4 +181,5 @@
   </script>
 </body>
 </html>
+
 
