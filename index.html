@@ -1,202 +1,163 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cátedra de Toxicología - Menú Institucional</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu</title>
 
-  <link rel="icon" href="logo2.png" type="image/png" />
-
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      min-height: 100vh;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(135deg, #087882 0%, #0c8c9c 40%, #045c63 70%, #04545d 100%);
+<style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f9f9f9;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
     }
 
-    .fecha {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 14px;
-      color: #c6d5da;
-      font-weight: 600;
+    /* Fondo animado detrás de todo */
+    .background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, #6fb1fc, #4364f7, #3f51b5);
+        background-size: 180% 180%;
+        animation: gradientMove 6s ease infinite;
+        z-index: -1;
+    }
+
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    header {
+        text-align: right;
+        padding: 15px 25px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
     }
 
     main {
-      background: rgba(198, 213, 218, 0.95);
-      border-radius: 20px;
-      width: 95%;
-      max-width: 420px; /* reducido un poquito para celular */
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: auto;
-      margin-bottom: auto;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(6px);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.15);
+        width: 340px;
+        max-width: 90%;
+        margin: auto;
+        text-align: center;
+        animation: fadeIn 0.5s ease-out;
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mantener tamaño del logo */
     .logo {
-      width: 100%;
-      height: auto;
-      margin-bottom: 30px;
-      display: block;
-      border-radius: 12px;
+        width: 160px;
+        height: auto;
+        margin-bottom: 15px;
     }
 
-    .btn {
-      width: 100%;           
-      max-width: 100%;
-      padding: 16px;
-      margin: 10px 0;
-      font-size: 17px;
-      font-weight: 600;
-      color: #fff;
-      background-color: #0c8c9c;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-decoration: none;
-      text-align: center;
+    /* Botones: nunca más anchos que el logo */
+    .menu-button {
+        background: #3f51b5;
+        color: white;
+        padding: 12px;
+        margin: 8px auto;
+        border: none;
+        border-radius: 10px;
+        width: 160px; /* mismo ancho que el logo */
+        display: block;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.25s;
     }
 
-    .btn:hover {
-      background-color: #04545d;
-      transform: translateY(-2px);
+    .menu-button:hover {
+        background: #5c6bc0;
+        transform: scale(1.03);
     }
 
-    .subbtn {
-      display: inline-block;
-      width: auto;          
-      padding: 10px 16px;
-      margin: 8px 0;
-      font-size: 15px;
-      font-weight: 600;
-      color: #04545d;
-      background-color: #c6d5da;
-      border: 2px solid #04545d;
-      border-radius: 10px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.25s;
-      text-decoration: none;
-    }
-
-    .subbtn:hover {
-      background-color: #608b92;
-      color: #fff;
-      transform: translateY(-1px);
-    }
-
-    .collapsible {
-      width: 100%;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .visible {
-      max-height: 800px;
-    }
-
-    .datos {
-      margin-top: 12px;
-      font-size: 15px;
-      color: #04545d;
-      line-height: 1.5;
-      display: none;
-      text-align: center;
+    /* Subbotones ajustados al texto */
+    .submenu button {
+        width: auto;
+        padding: 10px 18px;
+        margin-top: 5px;
+        font-size: 15px;
     }
 
     footer {
-      width: 100%;
-      font-size: 13px;
-      color: #c6d5da;
-      text-align: center;
-      font-weight: 500;
-      padding: 10px 0;
+        text-align: center;
+        padding: 8px 0;
+        margin-top: auto;
+        color: rgba(255,255,255,0.9);
+        font-size: 14px;
     }
 
-    @media screen and (max-width: 480px) {
-      main {
-        max-width: 90%; /* ajusta el ancho en móviles */
-        padding: 20px;
-      }
+    /* Ajuste para celular: main más angosto */
+    @media (max-width: 480px) {
+        main {
+            width: 310px;
+        }
+        .menu-button {
+            width: 150px;
+        }
+        .logo {
+            width: 150px;
+        }
     }
-  </style>
+</style>
 </head>
-<body>
-  <div class="fecha" id="fecha"></div>
 
-  <main>
+<body>
+
+<div class="background"></div>
+
+<header id="fecha"></header>
+
+<main>
     <img src="logo.png" alt="Logo" class="logo">
 
-    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
-    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
-    <button class="btn" onclick="toggleContacto()">Contacto</button>
-
-    <div id="contactoBox" class="collapsible">
-      <a class="subbtn" target="_blank" href="https://cartelera.med.unlp.edu.ar/catedra/10">Cartelera Virtual</a>
-      <a class="subbtn" target="_blank" href="https://educativa.med.unlp.edu.ar/login/index.php">Entorno Educativo</a>
-      <button class="subbtn" onclick="toggleDatos()">Cátedra de Toxicología</button>
-
-      <div id="datosCatedra" class="datos">
-        <p><strong>Dirección:</strong><br>
-        Anexo Calle 7 Nº1523 – FCM – UNLP</p>
-        <p><strong>Email:</strong><br>
-        toxicologia@med.unlp.edu.ar (asuntos administrativos)<br>
-        toxicoalumnos@gmail.com (asuntos académicos)</p>
-      </div>
+    <button class="menu-button" onclick="toggleSubmenu('sm1')">Simulación Clínica</button>
+    <div id="sm1" class="submenu" style="display:none;">
+        <button onclick="location.href='inscripcion.html'">Inscribirse</button>
+        <button onclick="location.href='consultar.html'">Consultar</button>
     </div>
-  </main>
 
-  <footer>
-    © 2026 Cátedra de Toxicología, Facultad de Ciencias Médicas - UNLP
-  </footer>
+    <button class="menu-button" onclick="toggleSubmenu('sm2')">Clases</button>
+    <div id="sm2" class="submenu" style="display:none;">
+        <button onclick="location.href='teoricas.html'">Teóricas</button>
+        <button onclick="location.href='material.html'">Material</button>
+    </div>
 
-  <script>
-    // Fecha dinámica
-    const fechaDiv = document.getElementById('fecha');
-    const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
-    fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
+</main>
 
-    // Funciones colapsables
-    const contactoBox = document.getElementById('contactoBox');
-    const datosCatedra = document.getElementById('datosCatedra');
+<footer>© 2026 Cátedra de Toxicología, Facultad de Ciencias Médicas - UNLP</footer>
 
-    function toggleContacto() {
-      const isOpen = contactoBox.classList.contains('visible');
-      closeAll();
-      if (!isOpen) contactoBox.classList.add('visible');
+<script>
+    function toggleSubmenu(id) {
+        const s = document.getElementById(id);
+        s.style.display = s.style.display === "none" ? "block" : "none";
     }
 
-    function toggleDatos() {
-      datosCatedra.style.display = datosCatedra.style.display === 'block' ? 'none' : 'block';
-    }
+    // Fecha automática Argentina dd/mm/yyyy
+    const hoy = new Date();
+    const fechaFormateada = hoy.toLocaleDateString("es-AR");
+    document.getElementById("fecha").innerText = fechaFormateada;
+</script>
 
-    function closeAll() {
-      contactoBox.classList.remove('visible');
-      datosCatedra.style.display = 'none';
-    }
-
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
-  </script>
 </body>
 </html>
+
 
 
 
