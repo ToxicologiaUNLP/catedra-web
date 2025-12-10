@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cátedra de Toxicología - Menú Institucional</title>
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+
+  <!-- Anti-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <!-- Favicon -->
   <link rel="icon" href="logo2.png" type="image/png" />
@@ -53,17 +55,14 @@
       text-decoration: none;
       transition: 0.25s;
     }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
+    .btn:hover { opacity: 0.9; }
 
     /* Subbotones */
     .subbtn {
       display: block;
       width: 100%;
       background: white;
-      color: #000;
+      color: black;
       padding: 13px;
       margin: 8px 0;
       border: 2px solid black;
@@ -74,18 +73,14 @@
       text-decoration: none;
       transition: 0.25s;
     }
+    .subbtn:hover { background: #efefef; }
 
-    .subbtn:hover {
-      background: #efefef;
-    }
-
-    /* Animación desplegable */
+    /* Animación */
     .collapsible {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.35s ease;
     }
-
     .visible {
       max-height: 500px;
     }
@@ -99,15 +94,21 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
 
     <img src="logo.png" alt="Logo" class="logo">
 
-    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
-    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
+    <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">
+      Asistencia y Calificaciones
+    </a>
 
-    <button class="btn" onclick="toggleContacto()" aria-expanded="false">
+    <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">
+      Inscripciones
+    </a>
+
+    <button class="btn" onclick="toggleContacto()">
       Contacto
     </button>
 
@@ -133,10 +134,12 @@
 
         <p><strong>Email:</strong><br>
         toxicologia@med.unlp.edu.ar (administrativos)<br>
-        toxicoalumnos@gmail.com (académicos)</p>
+        toxicoalumnos@gmail.com (académicos)
+        </p>
       </div>
 
     </div>
+
   </div>
 
   <script>
@@ -146,16 +149,20 @@
     }
 
     function toggleContacto() {
-      closeAll();
       const box = document.getElementById('contactoBox');
-      const expanded = box.classList.toggle('visible');
-      document.querySelector('[onclick="toggleContacto()"]')
-        .setAttribute("aria-expanded", expanded);
+      const isOpen = box.classList.contains('visible');
+
+      closeAll();
+
+      if (!isOpen) {
+        box.classList.add('visible');
+      }
     }
 
     function toggleDatos() {
       const datos = document.getElementById('datosCatedra');
-      datos.style.display = datos.style.display === "block" ? "none" : "block";
+      datos.style.display =
+        datos.style.display === "block" ? "none" : "block";
     }
 
     document.addEventListener("keydown", e => {
@@ -165,3 +172,4 @@
 
 </body>
 </html>
+
