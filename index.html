@@ -15,14 +15,16 @@
       padding: 0;
       font-family: "Segoe UI", Arial, sans-serif;
       height: 100%;
-      background: linear-gradient(135deg, #087882, #04545d);
       display: flex;
       justify-content: center;
       align-items: center;
+      /* Fondo institucional más claro y difuminado */
+      background: radial-gradient(circle at center, #0a9a9b 0%, #04545d 100%);
     }
 
     main {
-      background: #c6d5da; /* fondo claro para contraste */
+      position: relative;
+      background: rgba(198, 213, 218, 0.95); /* fondo claro con transparencia */
       border-radius: 20px;
       width: 95%;
       max-width: 480px;
@@ -32,6 +34,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    /* Fecha en esquina superior derecha */
+    .fecha {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
+      color: #04545d;
+      font-weight: 600;
     }
 
     /* Logo ocupa todo el ancho del main */
@@ -45,8 +58,8 @@
 
     /* Botones principales */
     .btn {
-      width: 100%;
-      padding: 16px;
+      display: inline-block;
+      padding: 12px 20px;
       margin: 10px 0;
       font-size: 17px;
       font-weight: 600;
@@ -56,6 +69,7 @@
       border-radius: 12px;
       cursor: pointer;
       transition: all 0.3s;
+      text-decoration: none; /* sin subrayado */
     }
     .btn:hover {
       background-color: #045c63;
@@ -64,10 +78,9 @@
 
     /* Subbotones */
     .subbtn {
-      width: 90%;
-      max-width: 350px;
-      padding: 14px;
-      margin: 8px auto;
+      display: inline-block;
+      padding: 10px 16px;
+      margin: 8px 0;
       font-size: 15px;
       font-weight: 600;
       color: #04545d;
@@ -76,8 +89,8 @@
       border-radius: 10px;
       cursor: pointer;
       text-align: center;
-      display: block;
       transition: all 0.25s;
+      text-decoration: none; /* sin subrayado */
     }
     .subbtn:hover {
       background-color: #608b92;
@@ -105,33 +118,14 @@
       color: #04545d;
       line-height: 1.5;
       display: none;
-      text-align: center; /* texto centrado */
+      text-align: center;
     }
-
-    /* Botón volver */
-    .btn-back {
-      display: none;
-      width: 50%;
-      padding: 12px;
-      margin: 15px auto;
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-      background-color: #04545d;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .btn-back:hover {
-      background-color: #045c63;
-      transform: translateY(-1px);
-    }
-
   </style>
 </head>
 <body>
   <main>
+    <div class="fecha" id="fecha"></div>
+
     <img src="logo.png" alt="Logo" class="logo">
 
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
@@ -151,38 +145,34 @@
         toxicoalumnos@gmail.com (académicos)</p>
       </div>
     </div>
-
-    <button id="btnBack" class="btn-back" onclick="closeAll()">Volver</button>
   </main>
 
   <script>
+    // Mostrar fecha del día
+    const fechaDiv = document.getElementById('fecha');
+    const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
+    fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
+
+    // Funciones de colapsables
     const contactoBox = document.getElementById('contactoBox');
     const datosCatedra = document.getElementById('datosCatedra');
-    const btnBack = document.getElementById('btnBack');
 
     function toggleContacto() {
       const isOpen = contactoBox.classList.contains('visible');
       closeAll();
-      if (!isOpen) {
-        contactoBox.classList.add('visible');
-        btnBack.style.display = 'block';
-      }
+      if (!isOpen) contactoBox.classList.add('visible');
     }
 
     function toggleDatos() {
       datosCatedra.style.display = datosCatedra.style.display === 'block' ? 'none' : 'block';
-      btnBack.style.display = 'block';
     }
 
     function closeAll() {
       contactoBox.classList.remove('visible');
       datosCatedra.style.display = 'none';
-      btnBack.style.display = 'none';
     }
 
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closeAll();
-    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
   </script>
 </body>
 </html>
