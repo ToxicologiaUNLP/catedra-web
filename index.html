@@ -8,137 +8,162 @@
   <link rel="icon" href="logo2.png" type="image/png" />
 
   <style>
+    :root {
+      --primary: #0c8c9c;
+      --primary-dark: #04545d;
+      --bg-light: #c6d5da;
+      --text-main: #04545d;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+    }
+
     body, html {
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       min-height: 100vh;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
       background: linear-gradient(135deg, #087882 0%, #0c8c9c 40%, #045c63 70%, #04545d 100%);
+      background-attachment: fixed;
     }
 
     .fecha {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-family: "Segoe UI", Arial, sans-serif;
-      font-size: 14px;
-      color: #c6d5da;
-      font-weight: 600;
+      align-self: flex-end;
+      margin: 20px 30px 0 0;
+      font-size: 13px;
+      color: rgba(198, 213, 218, 0.8);
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
     }
 
     main {
-      background: rgba(198, 213, 218, 0.95);
-      border-radius: 20px;
-      width: 95%;
-      max-width: 420px;
-      padding: 30px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px;
+      width: 90%;
+      max-width: 400px;
+      padding: 40px 30px;
       text-align: center;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: auto;
-      margin-bottom: auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.3);
+      margin: auto;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .logo {
       width: 100%;
+      max-width: 280px;
       height: auto;
-      margin-bottom: 30px;
-      display: block;
+      margin-bottom: 35px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
       border-radius: 12px;
     }
 
-    /* BOTONES PRINCIPALES (todos exactamente del mismo ancho) */
+    /* BOTONES PRINCIPALES */
     .btn {
-      display: block;            /* <- asegura que <a> tome el ancho como <button> */
-      box-sizing: border-box;    /* <- incluye padding en el ancho */
+      display: block;
+      box-sizing: border-box;
       width: 100%;
-      padding: 16px;
-      margin: 10px 0;
-      font-size: 17px;
-      font-weight: 600;
+      padding: 16px 24px;
+      margin: 12px 0;
+      font-size: 16px;
+      font-weight: 700;
       color: #fff;
-      background-color: #0c8c9c;
+      background: var(--primary);
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
       text-decoration: none;
       text-align: center;
+      box-shadow: 0 4px 12px rgba(12, 140, 156, 0.3);
+      position: relative;
+      overflow: hidden;
     }
 
     .btn:hover {
-      background-color: #04545d;
-      transform: translateY(-2px);
+      background-color: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(4, 84, 93, 0.4);
     }
 
-    /* SUBBOTONES (ancho del texto centrado) */
+    .btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* SUBBOTONES */
     .subbtn {
       display: inline-block;
-      width: auto;
-      padding: 10px 16px;
-      margin: 8px 0;
-      font-size: 15px;
+      width: 85%;
+      padding: 12px 16px;
+      margin: 6px 0;
+      font-size: 14px;
       font-weight: 600;
-      color: #04545d;
-      background-color: #c6d5da;
-      border: 2px solid #04545d;
-      border-radius: 10px;
+      color: var(--primary-dark);
+      background-color: rgba(198, 213, 218, 0.4);
+      border: 1.5px solid var(--primary-dark);
+      border-radius: 12px;
       cursor: pointer;
       text-align: center;
-      transition: all 0.25s;
+      transition: all 0.2s;
       text-decoration: none;
     }
 
     .subbtn:hover {
-      background-color: #608b92;
+      background-color: var(--primary-dark);
       color: #fff;
-      transform: translateY(-1px);
     }
 
     .collapsible {
       width: 100%;
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.35s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+      background: rgba(0,0,0,0.03);
+      border-radius: 16px;
+      margin-top: 5px;
     }
 
-    .visible {
-      max-height: 800px;
+    .collapsible.visible {
+      max-height: 1000px;
+      transition: max-height 0.5s ease-in-out;
+      padding: 15px 0;
+      margin-bottom: 15px;
     }
 
     .datos {
-      margin-top: 12px;
-      font-size: 15px;
-      color: #04545d;
-      line-height: 1.5;
+      margin-top: 15px;
+      padding: 15px;
+      font-size: 14px;
+      color: var(--text-main);
+      line-height: 1.6;
       display: none;
       text-align: center;
+      background: white;
+      border-radius: 12px;
+      width: 80%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     footer {
       width: 100%;
-      font-size: 13px;
-      color: #c6d5da;
+      font-size: 12px;
+      color: rgba(198, 213, 218, 0.7);
       text-align: center;
-      font-weight: 500;
-      padding: 10px 0;
+      font-weight: 400;
+      padding: 25px 0;
+      letter-spacing: 0.3px;
     }
 
     @media screen and (max-width: 480px) {
       main {
-        max-width: 90%;
-        padding: 20px;
+        width: 85%;
+        padding: 30px 20px;
       }
+      .fecha { margin: 15px 20px 0 0; }
     }
   </style>
 </head>
@@ -150,25 +175,28 @@
 
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
     <a class="btn" href="https://inscripcion-hosic-toxicologia.netlify.app/">Inscripciones</a>
-    <button class="btn" onclick="toggleContacto()">Contacto</button>
+    <button class="btn" onclick="toggleContacto()">Contacto e Información</button>
 
     <div id="contactoBox" class="collapsible">
       <a class="subbtn" target="_blank" href="https://cartelera.med.unlp.edu.ar/catedra/10">Cartelera Virtual</a>
       <a class="subbtn" target="_blank" href="https://educativa.med.unlp.edu.ar/login/index.php">Entorno Educativo</a>
-      <button class="subbtn" onclick="toggleDatos()">Cátedra de Toxicología</button>
+      <button class="subbtn" onclick="toggleDatos()">Sede de Cátedra</button>
 
-      <div id="datosCatedra" class="datos">
-        <p><strong>Dirección:</strong><br>
-        Anexo Calle 7 Nº1523 – FCM – UNLP</p>
-        <p><strong>Email:</strong><br>
-        toxicologia@med.unlp.edu.ar (asuntos administrativos)<br>
-        toxicoalumnos@gmail.com (asuntos académicos)</p>
-      </div>
+      <center>
+        <div id="datosCatedra" class="datos">
+          <p style="margin-top:0"><strong>📍 Dirección</strong><br>
+          Anexo Calle 7 Nº1523<br>FCM – UNLP</p>
+          <p style="margin-bottom:0"><strong>✉️ Emails</strong><br>
+          <small>Admin:</small> toxicologia@med.unlp.edu.ar<br>
+          <small>Alumnos:</small> toxicoalumnos@gmail.com</p>
+        </div>
+      </center>
     </div>
   </main>
 
   <footer>
-    © 2026 Cátedra de Toxicología, Facultad de Ciencias Médicas - UNLP
+    © 2026 Cátedra de Toxicología<br>
+    Facultad de Ciencias Médicas - UNLP
   </footer>
 
   <script>
@@ -177,7 +205,7 @@
     const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
     fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
 
-    // Funciones colapsables
+    // Funciones colapsables (IDÉNTICAS A LAS ORIGINALES)
     const contactoBox = document.getElementById('contactoBox');
     const datosCatedra = document.getElementById('datosCatedra');
 
@@ -200,4 +228,3 @@
   </script>
 </body>
 </html>
-
