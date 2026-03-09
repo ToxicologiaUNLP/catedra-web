@@ -104,20 +104,18 @@
       border-radius: 28px; max-width: 380px;
       width: 100%; text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-      /* NUEVO: Alineación central para elementos internos */
       display: flex; flex-direction: column; align-items: center;
     }
     .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
     .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; font-weight: 700; }
     .modal p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
     
-    /* MODIFICADO: Botón que se ajusta al texto y está centrado */
     .btn-modal-action {
       background: var(--primary); color: white;
       border: none; padding: 12px 25px;
       border-radius: 12px; font-weight: 700; font-size: 16px;
       cursor: pointer; text-decoration: none; 
-      display: inline-block; width: auto; /* Ajusta al texto */
+      display: inline-block; width: auto;
       transition: 0.3s;
     }
     .btn-modal-action:hover { background: var(--primary-dark); transform: scale(1.05); }
@@ -177,13 +175,12 @@
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
     const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
 
-    function parsearFechaZero(str) {
+    function parsearFechaZero(str, hora, min) {
       if(!str) return new Date();
       const parts = str.trim().split('/');
       if(parts.length < 3) return new Date();
       const year = parts[2].length === 2 ? 2000 + parseInt(parts[2]) : parseInt(parts[2]);
-      // Forzamos comparación a las 00:00:00 del día
-      return new Date(year, parts[1] - 1, parts[0], 0, 0, 0);
+      return new Date(year, parts[1] - 1, parts[0], hora, min, 0);
     }
 
     function validarAccesoCursada() {
@@ -192,7 +189,6 @@
       modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando calendario...</p>`;
       overlay.style.display = 'flex';
 
-      // Agregamos "&t=" para saltar la memoria del navegador (caché)
       fetch(csvURL + "&t=" + new Date().getTime())
       .then(res => res.text())
       .then(texto => {
@@ -204,19 +200,17 @@
         const randoFechas = coincidencia[0];
         const [inicioStr, finStr] = randoFechas.split('-');
         
-        const fInicio = parsearFechaZero(inicioStr);
-        const fFin = parsearFechaZero(finStr);
-        
-        // Ajustamos "Hoy" para que la comparación sea solo por fecha (sin horas)
-        const d = new Date();
-        const hoy = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
+        // Configuramos Apertura: 8:00 AM / Cierre: 00:00 AM (inicio del día de fin)
+        const fInicio = parsearFechaZero(inicioStr, 8, 0);
+        const fFin = parsearFechaZero(finStr, 0, 0);
+        const hoy = new Date();
 
         if (hoy < fInicio) {
-          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
+          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong> a las 08:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
         } else if (hoy >= fFin) {
           modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
-          modal.innerHTML = `<span class="modal-emoji">✅</span><h2>INSCRIPCIONES HABILITADAS </h2><p>Ya podes elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
+          modal.innerHTML = `<span class="modal-emoji">✅</span><h2>INSCRIPCIONES HABILITADAS </h2><p>Ya podés elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
         }
       })
       .catch(err => {
