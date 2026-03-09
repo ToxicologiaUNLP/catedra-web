@@ -216,7 +216,7 @@
         } else if (hoy >= fFin) {
           modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
-          modal.innerHTML = `<span class="modal-emoji">📋</span><h2>SISTEMA ABIERTO</h2><p>Ya puedes completar tu inscripción.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
+          modal.innerHTML = `<span class="modal-emoji">📋</span><h2>INSCRIPCIONES HABILITADAS</h2><p>Ya podes elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
         }
       })
       .catch(err => {
