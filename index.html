@@ -111,32 +111,42 @@
       transform: translateX(4px);
     }
 
-    /* MODAL DE AVISO (Estilo Simulación) */
+    /* MODAL MEJORADO */
     .overlay {
       position: fixed; inset: 0;
-      background: rgba(4, 84, 93, 0.95);
-      backdrop-filter: blur(8px);
-      display: none; /* Se activa con JS */
+      background: rgba(4, 84, 93, 0.96);
+      backdrop-filter: blur(10px);
+      display: none;
       justify-content: center; align-items: center;
       z-index: 9999; padding: 20px;
     }
 
     .modal {
-      background: white; padding: 30px;
-      border-radius: 24px; max-width: 350px;
+      background: white; padding: 35px;
+      border-radius: 28px; max-width: 380px;
       width: 100%; text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
     }
 
-    .modal-emoji { font-size: 50px; display: block; margin-bottom: 10px; }
-    .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; }
-    .modal p { color: #555; font-size: 14px; line-height: 1.5; }
+    .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
+    .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; font-weight: 700; }
+    .modal p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
     
-    .btn-cerrar-modal {
+    .btn-modal-action {
       background: var(--primary); color: white;
-      border: none; padding: 12px 25px;
-      border-radius: 10px; font-weight: 700;
-      cursor: pointer; margin-top: 20px; width: 100%;
+      border: none; padding: 15px;
+      border-radius: 12px; font-weight: 700; font-size: 16px;
+      cursor: pointer; width: 100%; text-decoration: none; display: block;
+      transition: 0.3s;
+    }
+
+    .btn-modal-action:hover { background: var(--primary-dark); }
+
+    .btn-modal-back {
+      background: transparent; color: var(--primary);
+      border: 2px solid var(--primary); padding: 12px;
+      border-radius: 12px; font-weight: 700;
+      cursor: pointer; margin-top: 12px; width: 100%;
     }
 
     .datos {
@@ -170,7 +180,6 @@
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
       <button class="subbtn" onclick="validarAccesoCursada()">Comisión de Cursada</button>
-      
       <a class="subbtn" target="_blank" href="https://inscripcion-hosic-toxicologia.netlify.app/">Taller de Simulación (HoSiC)</a>
     </div>
 
@@ -205,6 +214,11 @@
     }
 
     function validarAccesoCursada() {
+      const overlay = document.getElementById('overlay');
+      const modal = document.getElementById('modalContenido');
+      modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando el estado de inscripción.</p>`;
+      overlay.style.display = 'flex';
+
       fetch(csvURL).then(res => res.text()).then(csv => {
         const filas = csv.trim().split("\n").map(f => f.split(","));
         const randoFechas = filas[0][6]; // Celda G1
@@ -213,28 +227,22 @@
         const fInicio = parsearFechaZero(inicioStr);
         const fFin = parsearFechaZero(finStr);
         const hoy = new Date();
-        
-        const overlay = document.getElementById('overlay');
-        const modal = document.getElementById('modalContenido');
 
         if (hoy < fInicio) {
-          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>PRÓXIMAMENTE</h2><p>La inscripción a comisión de cursada abrirá el día <strong>${inicioStr}</strong> a las 00:00 hs.</p><button class="btn-cerrar-modal" onclick="cerrarModal()">Entendido</button>`;
-          overlay.style.display = 'flex';
+          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr} - 00:00 hs</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
         } else if (hoy >= fFin) {
-          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>La inscripción cerró el día <strong>${finStr}</strong> a las 00:00 hs.</p><button class="btn-cerrar-modal" onclick="cerrarModal()">Volver</button>`;
-          overlay.style.display = 'flex';
+          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período de inscripción cerró el día:<br><strong>${finStr} - 00:00 hs</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver</button>`;
         } else {
-          // Si está en fecha, redirige directamente
-          window.open(formsURL, '_blank');
+          modal.innerHTML = `<span class="modal-emoji">📋</span><h2>SISTEMA ABIERTO</h2><p>Ya puedes completar tu inscripción a la comisión de cursada.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
         }
+      }).catch(() => {
+        modal.innerHTML = `<h2>Error</h2><p>No se pudo conectar con el servidor.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
       });
     }
 
-    function cerrarModal() {
-      document.getElementById('overlay').style.display = 'none';
-    }
+    function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
 
-    // --- Lógica General del Menú ---
+    // --- Interfaz ---
     const fechaDiv = document.getElementById('fecha');
     const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
     fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
@@ -264,8 +272,6 @@
       inscripcionesBox.classList.remove('visible');
       datosCatedra.style.display = 'none';
     }
-
-    document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
   </script>
 </body>
 </html>
