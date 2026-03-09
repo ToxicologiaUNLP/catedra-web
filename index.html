@@ -104,22 +104,29 @@
       border-radius: 28px; max-width: 380px;
       width: 100%; text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      /* NUEVO: Alineación central para elementos internos */
+      display: flex; flex-direction: column; align-items: center;
     }
     .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
     .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; font-weight: 700; }
     .modal p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+    
+    /* MODIFICADO: Botón que se ajusta al texto y está centrado */
     .btn-modal-action {
       background: var(--primary); color: white;
-      border: none; padding: 15px;
+      border: none; padding: 12px 25px;
       border-radius: 12px; font-weight: 700; font-size: 16px;
-      cursor: pointer; width: 100%; text-decoration: none; display: block;
+      cursor: pointer; text-decoration: none; 
+      display: inline-block; width: auto; /* Ajusta al texto */
       transition: 0.3s;
     }
+    .btn-modal-action:hover { background: var(--primary-dark); transform: scale(1.05); }
+
     .btn-modal-back {
       background: transparent; color: var(--primary);
-      border: 2px solid var(--primary); padding: 12px;
-      border-radius: 12px; font-weight: 700;
-      cursor: pointer; margin-top: 12px; width: 100%;
+      border: none; padding: 10px;
+      cursor: pointer; margin-top: 15px; width: auto;
+      font-weight: 600; text-decoration: underline;
     }
     .datos {
       margin-top: 15px; font-size: 14px; color: #444; line-height: 1.6;
@@ -175,6 +182,7 @@
       const parts = str.trim().split('/');
       if(parts.length < 3) return new Date();
       const year = parts[2].length === 2 ? 2000 + parseInt(parts[2]) : parseInt(parts[2]);
+      // Forzamos comparación a las 00:00:00 del día
       return new Date(year, parts[1] - 1, parts[0], 0, 0, 0);
     }
 
@@ -184,10 +192,10 @@
       modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando calendario...</p>`;
       overlay.style.display = 'flex';
 
+      // Agregamos "&t=" para saltar la memoria del navegador (caché)
       fetch(csvURL + "&t=" + new Date().getTime())
       .then(res => res.text())
       .then(texto => {
-        // BUSCADOR ULTRA-ROBUSTO: Busca el patrón DD/MM/YY-DD/MM/YY en todo el archivo
         const regex = /\d{2}\/\d{2}\/\d{2,4}-\d{2}\/\d{2}\/\d{2,4}/;
         const coincidencia = texto.match(regex);
 
@@ -195,14 +203,18 @@
 
         const randoFechas = coincidencia[0];
         const [inicioStr, finStr] = randoFechas.split('-');
+        
         const fInicio = parsearFechaZero(inicioStr);
         const fFin = parsearFechaZero(finStr);
-        const hoy = new Date();
+        
+        // Ajustamos "Hoy" para que la comparación sea solo por fecha (sin horas)
+        const d = new Date();
+        const hoy = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0);
 
         if (hoy < fInicio) {
-          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong> a las 00:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Entendido</button>`;
+          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
         } else if (hoy >= fFin) {
-          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong> a las 00:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Volver</button>`;
+          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
           modal.innerHTML = `<span class="modal-emoji">📋</span><h2>SISTEMA ABIERTO</h2><p>Ya puedes completar tu inscripción.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
         }
@@ -214,9 +226,26 @@
 
     function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
     document.getElementById('fechaHoy').textContent = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
-    function toggleInscripciones() { closeAll(); document.getElementById('inscripcionesBox').classList.add('visible'); }
-    function toggleContacto() { closeAll(); document.getElementById('contactoBox').classList.add('visible'); }
-    function toggleDatos() { document.getElementById('datosCatedra').style.display = 'block'; }
+    
+    function toggleInscripciones() { 
+      const box = document.getElementById('inscripcionesBox');
+      const isVisible = box.classList.contains('visible');
+      closeAll(); 
+      if (!isVisible) box.classList.add('visible'); 
+    }
+    
+    function toggleContacto() { 
+      const box = document.getElementById('contactoBox');
+      const isVisible = box.classList.contains('visible');
+      closeAll(); 
+      if (!isVisible) box.classList.add('visible'); 
+    }
+    
+    function toggleDatos() { 
+      const div = document.getElementById('datosCatedra');
+      div.style.display = (div.style.display === 'block') ? 'none' : 'block'; 
+    }
+    
     function closeAll() {
       document.getElementById('contactoBox').classList.remove('visible');
       document.getElementById('inscripcionesBox').classList.remove('visible');
