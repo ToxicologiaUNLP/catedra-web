@@ -25,7 +25,7 @@
       background: var(--bg-gradient); background-attachment: fixed;
     }
 
-    .fecha {
+    .fecha-hoy {
       align-self: flex-end;
       margin: 25px 35px 0 0;
       font-size: 13px; color: rgba(255,255,255,0.7);
@@ -174,7 +174,7 @@
       </div>
   </div>
 
-  <div class="fecha" id="fecha"></div>
+  <div class="fecha-hoy" id="fechaHoy"></div>
 
   <main>
     <img src="logo.png" alt="Logo" class="logo">
@@ -234,11 +234,14 @@
         return res.text();
       })
       .then(csv => {
-        const filas = csv.trim().split("\n").map(f => f.split(","));
-        let randoFechas = filas[0][6]; // Celda G1
+        // Obtenemos la primera fila y buscamos cualquier celda que contenga el guion "-"
+        const filas = csv.trim().split("\n");
+        const primeraFila = filas[0].split(",");
+        
+        let randoFechas = primeraFila.find(celda => celda.includes('-'));
         randoFechas = randoFechas ? randoFechas.replace(/"/g, '').trim() : "";
 
-        if (!randoFechas || !randoFechas.includes('-')) {
+        if (!randoFechas) {
             throw new Error("Formato de fecha no encontrado");
         }
 
@@ -256,7 +259,7 @@
         }
       })
       .catch(err => {
-        console.error(err);
+        console.error("Error:", err);
         modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>No se pudo verificar la fecha automáticamente.<br>Intenta ingresar directamente al formulario:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
       });
     }
@@ -264,7 +267,7 @@
     function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
 
     // --- Interfaz ---
-    document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+    document.getElementById('fechaHoy').textContent = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
 
     function toggleInscripciones() {
       const box = document.getElementById('inscripcionesBox');
