@@ -15,7 +15,6 @@
       --accent: #15aabf;
       --bg-gradient: linear-gradient(135deg, #064e57 0%, #0c8c9c 50%, #055e69 100%);
       --glass-bg: rgba(255, 255, 255, 0.94);
-      --error-color: #b71c1c;
     }
 
     body, html {
@@ -43,6 +42,7 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       margin-top: auto; margin-bottom: auto;
       display: flex; flex-direction: column; align-items: center;
+      z-index: 1;
     }
 
     .logo {
@@ -111,16 +111,32 @@
       transform: translateX(4px);
     }
 
-    .estado-inscripcion {
-      font-size: 12px;
-      padding: 10px;
-      border-radius: 10px;
-      background: #fff4f4;
-      color: var(--error-color);
-      border: 1px solid #ffcccc;
-      margin: 5px 0;
-      display: none;
-      font-weight: 600;
+    /* MODAL DE AVISO (Estilo Simulación) */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(4, 84, 93, 0.95);
+      backdrop-filter: blur(8px);
+      display: none; /* Se activa con JS */
+      justify-content: center; align-items: center;
+      z-index: 9999; padding: 20px;
+    }
+
+    .modal {
+      background: white; padding: 30px;
+      border-radius: 24px; max-width: 350px;
+      width: 100%; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .modal-emoji { font-size: 50px; display: block; margin-bottom: 10px; }
+    .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; }
+    .modal p { color: #555; font-size: 14px; line-height: 1.5; }
+    
+    .btn-cerrar-modal {
+      background: var(--primary); color: white;
+      border: none; padding: 12px 25px;
+      border-radius: 10px; font-weight: 700;
+      cursor: pointer; margin-top: 20px; width: 100%;
     }
 
     .datos {
@@ -135,13 +151,15 @@
       width: 100%; font-size: 12px; color: rgba(255,255,255,0.6);
       text-align: center; font-weight: 500; padding: 20px 0;
     }
-
-    @media screen and (max-width: 480px) {
-      main { padding: 25px; width: 85%; }
-    }
   </style>
 </head>
 <body>
+
+  <div class="overlay" id="overlay">
+    <div class="modal" id="modalContenido">
+      </div>
+  </div>
+
   <div class="fecha" id="fecha"></div>
 
   <main>
@@ -151,9 +169,7 @@
     
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
-      <div id="estadoCursada" class="estado-inscripcion"></div>
-      
-      <a id="btnCursada" class="subbtn" target="_blank" href="https://forms.gle/nCxqNzoqHYv2rmHi6" style="display: none;">Comisión de Cursada</a>
+      <button class="subbtn" onclick="validarAccesoCursada()">Comisión de Cursada</button>
       
       <a class="subbtn" target="_blank" href="https://inscripcion-hosic-toxicologia.netlify.app/">Taller de Simulación (HoSiC)</a>
     </div>
@@ -168,8 +184,8 @@
         <p><strong>Dirección:</strong><br>
         Anexo Calle 7 Nº1523 – FCM – UNLP</p>
         <p><strong>Email:</strong><br>
-        administrativas: toxicologia@med.unlp.edu.ar<br>
-        pedagógicas: toxicoalumnos@gmail.com</p>
+        Administrativas: toxicologia@med.unlp.edu.ar<br>
+        Pedagógicas: toxicoalumnos@gmail.com</p>
       </div>
     </div>
   </main>
@@ -180,39 +196,45 @@
   </footer>
 
   <script>
-    // URL del CSV de tu Sheet
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
+    const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
 
     function parsearFechaZero(str) {
       const parts = str.trim().split('/');
       return new Date(2000 + parseInt(parts[2]), parts[1] - 1, parts[0], 0, 0, 0);
     }
 
-    // Validación automática de fechas leyendo G1
-    fetch(csvURL).then(res => res.text()).then(csv => {
-      const filas = csv.trim().split("\n").map(f => f.split(","));
-      const randoFechas = filas[0][6]; // Celda G1
-      
-      const [inicioStr, finStr] = randoFechas.split('-');
-      const fInicio = parsearFechaZero(inicioStr);
-      const fFin = parsearFechaZero(finStr);
-      const hoy = new Date();
+    function validarAccesoCursada() {
+      fetch(csvURL).then(res => res.text()).then(csv => {
+        const filas = csv.trim().split("\n").map(f => f.split(","));
+        const randoFechas = filas[0][6]; // Celda G1
+        const [inicioStr, finStr] = randoFechas.split('-');
+        
+        const fInicio = parsearFechaZero(inicioStr);
+        const fFin = parsearFechaZero(finStr);
+        const hoy = new Date();
+        
+        const overlay = document.getElementById('overlay');
+        const modal = document.getElementById('modalContenido');
 
-      const btnCursada = document.getElementById('btnCursada');
-      const estadoCursada = document.getElementById('estadoCursada');
+        if (hoy < fInicio) {
+          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>PRÓXIMAMENTE</h2><p>La inscripción a comisión de cursada abrirá el día <strong>${inicioStr}</strong> a las 00:00 hs.</p><button class="btn-cerrar-modal" onclick="cerrarModal()">Entendido</button>`;
+          overlay.style.display = 'flex';
+        } else if (hoy >= fFin) {
+          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>La inscripción cerró el día <strong>${finStr}</strong> a las 00:00 hs.</p><button class="btn-cerrar-modal" onclick="cerrarModal()">Volver</button>`;
+          overlay.style.display = 'flex';
+        } else {
+          // Si está en fecha, redirige directamente
+          window.open(formsURL, '_blank');
+        }
+      });
+    }
 
-      if (hoy < fInicio) {
-        estadoCursada.innerHTML = `⏳ Inscripción a comisión de cursada: Abre el ${inicioStr}`;
-        estadoCursada.style.display = 'block';
-      } else if (hoy >= fFin) {
-        estadoCursada.innerHTML = `🏁 Inscripción a comisión de cursada finalizada`;
-        estadoCursada.style.display = 'block';
-      } else {
-        btnCursada.style.display = 'block';
-      }
-    });
+    function cerrarModal() {
+      document.getElementById('overlay').style.display = 'none';
+    }
 
-    // Lógica de menús
+    // --- Lógica General del Menú ---
     const fechaDiv = document.getElementById('fecha');
     const opcionesFecha = { year: 'numeric', month: 'long', day: 'numeric' };
     fechaDiv.textContent = new Date().toLocaleDateString('es-AR', opcionesFecha);
@@ -243,7 +265,7 @@
       datosCatedra.style.display = 'none';
     }
 
-    document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") cerrarModal(); });
   </script>
 </body>
 </html>
