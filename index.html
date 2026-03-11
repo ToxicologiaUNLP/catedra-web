@@ -24,8 +24,14 @@
     .fecha-hoy {
       align-self: flex-end;
       margin: 25px 35px 0 0;
-      font-size: 13px; color: rgba(255,255,255,0.7);
-      font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      font-size: 11px; 
+      color: rgba(255,255,255,0.9);
+      font-weight: 700; 
+      letter-spacing: 1.2px; 
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+      padding-bottom: 4px;
+      font-family: 'Montserrat', sans-serif;
     }
     main {
       background: var(--glass-bg);
@@ -175,6 +181,29 @@
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
     const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
 
+    // Lógica de Ciclo Lectivo Automático
+    function actualizarCicloLectivo() {
+      const hoy = new Date();
+      const año = hoy.getFullYear();
+      let mensaje = `CICLO LECTIVO ${año} | CURSADA CERRADA`;
+
+      // Definición de Bimestres (Mes es 0-indexado: Enero=0, Abril=3, etc.)
+      const bimestres = [
+        { nombre: "1° BIMESTRE", inicio: new Date(año, 3, 20), fin: new Date(año, 5, 13) },
+        { nombre: "2° BIMESTRE", inicio: new Date(año, 5, 15), fin: new Date(año, 7, 22) },
+        { nombre: "3° BIMESTRE", inicio: new Date(año, 7, 24), fin: new Date(año, 9, 17) },
+        { nombre: "4° BIMESTRE", inicio: new Date(año, 9, 19), fin: new Date(año, 11, 12) }
+      ];
+
+      for (let b of bimestres) {
+        if (hoy >= b.inicio && hoy <= b.fin) {
+          mensaje = `CICLO LECTIVO ${año} | ${b.nombre}`;
+          break;
+        }
+      }
+      document.getElementById('fechaHoy').textContent = mensaje;
+    }
+
     function parsearFechaZero(str, hora, min) {
       if(!str) return new Date();
       const parts = str.trim().split('/');
@@ -199,8 +228,6 @@
 
         const randoFechas = coincidencia[0];
         const [inicioStr, finStr] = randoFechas.split('-');
-        
-        // Configuramos Apertura: 8:00 AM / Cierre: 00:00 AM (inicio del día de fin)
         const fInicio = parsearFechaZero(inicioStr, 8, 0);
         const fFin = parsearFechaZero(finStr, 0, 0);
         const hoy = new Date();
@@ -219,7 +246,9 @@
     }
 
     function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
-    document.getElementById('fechaHoy').textContent = new Date().toLocaleDateString('es-AR', { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    // Ejecutar actualización de ciclo al cargar
+    actualizarCicloLectivo();
     
     function toggleInscripciones() { 
       const box = document.getElementById('inscripcionesBox');
