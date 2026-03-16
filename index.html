@@ -5,18 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cátedra de Toxicología - Menú Institucional</title>
   <link rel="icon" href="logo2.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #2b828c;
-      --primary-dark: #075f69;
+      /* Nueva paleta: Seriedad Académica */
+      --primary: #246d77;         /* Turquesa mate, más serio */
+      --primary-dark: #1a3a40;    /* Azul pizarra para textos y rigor */
       --accent: #15aabf;
       --bg-gradient: linear-gradient(135deg, #064e57 0%, #2b828c 50%, #055e69 100%);
-      --glass-bg: rgba(255, 255, 255, 0.94);
+      --glass-bg: rgba(255, 255, 255, 0.96);
+      --text-main: #2c3e50;
     }
+
     body, html {
       margin: 0; padding: 0;
-      font-family: 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Montserrat', sans-serif;
       min-height: 100vh; width: 100%;
       display: flex; flex-direction: column; align-items: center;
       background: var(--bg-gradient); background-attachment: fixed;
@@ -24,132 +27,129 @@
     
     .fecha-hoy {
       text-align: center;
-      margin: 30px auto 10px auto;
-      width: 90%;
-      font-size: 11px; 
-      color: rgba(255,255,255,0.9);
-      font-weight: 700; 
-      letter-spacing: 1.5px; 
+      margin: 40px auto 15px auto;
+      width: 85%;
+      font-size: 10px; 
+      color: rgba(255,255,255,0.85);
+      font-weight: 600; 
+      letter-spacing: 2px; 
       text-transform: uppercase;
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-      padding-bottom: 6px;
-      font-family: 'Montserrat', sans-serif;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 8px;
     }
 
     main {
       background: var(--glass-bg);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: 24px;
-      width: 90%; max-width: 400px;
-      padding: 35px; text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-      margin-top: 10px; margin-bottom: auto;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 28px;
+      width: 90%; max-width: 380px;
+      padding: 40px 30px; text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      margin-top: 5px; margin-bottom: auto;
       display: flex; flex-direction: column; align-items: center;
       z-index: 1;
     }
+
     .logo {
-      width: 100%; height: auto;
-      margin-bottom: 30px; display: block;
-      border-radius: 16px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 100%; max-width: 280px; height: auto;
+      margin-bottom: 35px; display: block;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.05));
     }
+
+    /* Botones Principales Modernizados */
     .btn {
       display: block; width: 100%;
       box-sizing: border-box;
-      padding: 16px; margin: 12px 0;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 16px; font-weight: 700;
+      padding: 18px; margin: 10px 0;
+      font-size: 15px; font-weight: 700;
       color: #fff;
-      background: linear-gradient(to right, var(--primary), var(--accent));
-      border: none; border-radius: 14px;
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: var(--primary);
+      border: none; border-radius: 16px;
+      cursor: pointer; 
+      transition: all 0.3s ease;
       text-decoration: none; text-align: center;
-      box-shadow: 0 4px 12px rgba(12, 140, 156, 0.3);
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(36, 109, 119, 0.2);
     }
+
     .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 20px rgba(12, 140, 156, 0.4);
-      filter: brightness(1.1);
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(26, 58, 64, 0.3);
     }
+
     .collapsible {
       width: 100%; max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease-in-out;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex; flex-direction: column; align-items: stretch;
-      padding: 0 2px; box-sizing: border-box;
     }
+
     .visible {
-      max-height: 600px;
-      margin-top: 10px; margin-bottom: 10px;
+      max-height: 500px;
+      margin-top: 5px; margin-bottom: 15px;
     }
     
+    /* Sub-botones Estilo Institucional */
     .subbtn {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center;
       width: 100%; box-sizing: border-box;
-      padding: 12px 16px; margin: 6px 0;
-      font-family: 'Montserrat', sans-serif;
+      padding: 14px; margin: 5px 0;
       color: var(--primary-dark);
-      background-color: #eef4f5;
-      border: 2px solid rgba(12, 131, 145, 0.3);
-      border-radius: 12px;
-      cursor: pointer; text-decoration: none; text-align: center;
-      transition: all 0.25s ease;
+      background-color: #f1f7f8;
+      border: 1px solid rgba(36, 109, 119, 0.15);
+      border-radius: 14px;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s ease;
     }
-    .subbtn span.btn-text { font-size: 14px; font-weight: 700; }
-    .subbtn span.btn-date { font-size: 10px; font-weight: 600; opacity: 0.8; margin-top: 4px; line-height: 1.2; color: var(--primary-dark); }
+
+    .subbtn span.btn-text { font-size: 13px; font-weight: 700; text-transform: uppercase; }
+    .subbtn span.btn-date { font-size: 10px; font-weight: 500; color: #666; margin-top: 5px; }
 
     .subbtn:hover {
-      background-color: var(--primary-dark);
-      color: #fff;
-      border-color: var(--primary-dark);
-      transform: translateX(4px);
+      background-color: #e2eeef;
+      border-color: var(--primary);
+      transform: scale(1.01);
     }
-    .subbtn:hover span.btn-date { color: #fff; }
 
+    /* Modales y Overlay */
     .overlay {
       position: fixed; inset: 0;
-      background: rgba(4, 84, 93, 0.96);
-      backdrop-filter: blur(10px);
+      background: rgba(10, 40, 45, 0.92);
+      backdrop-filter: blur(8px);
       display: none; justify-content: center; align-items: center;
-      z-index: 9999; padding: 20px;
+      z-index: 9999;
     }
     .modal {
-      background: white; padding: 35px;
-      border-radius: 28px; max-width: 380px;
-      width: 100%; text-align: center;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-      display: flex; flex-direction: column; align-items: center;
+      background: white; padding: 40px 30px;
+      border-radius: 32px; max-width: 340px;
+      width: 85%; text-align: center;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
     }
-    .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
-    .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; font-weight: 700; }
-    .modal p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
+    .modal h2 { color: var(--primary-dark); font-size: 20px; margin-bottom: 15px; }
+    .modal p { color: #555; font-size: 14px; line-height: 1.6; }
     
     .btn-modal-action {
       background: var(--primary); color: white;
-      border: none; padding: 12px 25px;
-      border-radius: 12px; font-weight: 700; font-size: 16px;
-      cursor: pointer; text-decoration: none; 
-      display: inline-block; width: auto;
-      transition: 0.3s;
+      border: none; padding: 14px 28px;
+      border-radius: 14px; font-weight: 700;
+      text-decoration: none; display: inline-block; margin-top: 20px;
     }
-    .btn-modal-action:hover { background: var(--primary-dark); transform: scale(1.05); }
 
-    .btn-modal-back {
-      background: transparent; color: var(--primary);
-      border: none; padding: 10px;
-      cursor: pointer; margin-top: 15px; width: auto;
-      font-weight: 600; text-decoration: underline;
-    }
     .datos {
-      margin-top: 15px; font-size: 14px; color: #444; line-height: 1.6;
-      display: none; text-align: center; padding: 15px;
-      background: rgba(255,255,255,0.7); border-radius: 12px;
-      border: 1px dashed var(--primary);
+      margin-top: 10px; font-size: 13px; color: var(--primary-dark);
+      display: none; padding: 20px;
+      background: #f8fbfa; border-radius: 16px;
+      border: 1px solid rgba(36, 109, 119, 0.1);
       width: 100%; box-sizing: border-box;
+      line-height: 1.5;
     }
+
     footer {
-      width: 100%; font-size: 12px; color: rgba(255,255,255,0.6);
-      text-align: center; font-weight: 500; padding: 20px 0;
+      width: 100%; font-size: 11px; color: rgba(255,255,255,0.5);
+      text-align: center; font-weight: 500; padding: 25px 0;
+      letter-spacing: 0.5px;
     }
   </style>
 </head>
@@ -163,7 +163,9 @@
 
   <main>
     <img src="logo.png" alt="Logo" class="logo">
+    
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
+    
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
       <button class="subbtn" onclick="validarAccesoCursada()">
@@ -175,20 +177,27 @@
         <span class="btn-date" id="dateHoSiC">Cargando fechas...</span>
       </a>
     </div>
+
     <button class="btn" onclick="toggleContacto()">Canales de Contacto</button>
     <div id="contactoBox" class="collapsible">
-      <a class="subbtn" target="_blank" href="https://cartelera.med.unlp.edu.ar/catedra/10">Cartelera Virtual</a>
-      <a class="subbtn" target="_blank" href="https://educativa.med.unlp.edu.ar/login/index.php">Entorno Educativo</a>
-      <button class="subbtn" onclick="toggleDatos()">Información de la Cátedra</button>
+      <a class="subbtn" target="_blank" href="https://cartelera.med.unlp.edu.ar/catedra/10">
+        <span class="btn-text">Cartelera Virtual</span>
+      </a>
+      <a class="subbtn" target="_blank" href="https://educativa.med.unlp.edu.ar/login/index.php">
+        <span class="btn-text">Entorno Educativo</span>
+      </a>
+      <button class="subbtn" onclick="toggleDatos()">
+        <span class="btn-text">Información de la Cátedra</span>
+      </button>
       <div id="datosCatedra" class="datos">
         <p><strong>Dirección:</strong><br>Anexo Calle 7 Nº1523 – FCM – UNLP</p>
-        <p><strong>Email:</strong><br>Administrativas: toxicologia@med.unlp.edu.ar<br>Pedagógicas: toxicoalumnos@gmail.com</p>
+        <p><strong>Email:</strong><br>Administración: toxicologia@med.unlp.edu.ar<br>Alumnos: toxicoalumnos@gmail.com</p>
       </div>
     </div>
   </main>
 
   <footer>
-    © 2026 Cátedra de Toxicología<br>Facultad de Ciencias Médicas - UNLP
+    © 2026 CÁTEDRA DE TOXICOLOGÍA<br>FACULTAD DE CIENCIAS MÉDICAS - UNLP
   </footer>
 
   <script>
@@ -250,7 +259,7 @@
     function validarAccesoCursada() {
       const overlay = document.getElementById('overlay');
       const modal = document.getElementById('modalContenido');
-      modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando calendario...</p>`;
+      modal.innerHTML = `<h2>Verificando...</h2><p>Consultando calendario institucional.</p>`;
       overlay.style.display = 'flex';
 
       fetch(csvURL + "&t=" + new Date().getTime())
@@ -258,21 +267,21 @@
       .then(texto => {
         const regex = /\d{2}\/\d{2}\/\d{2,4}-\d{2}\/\d{2}\/\d{2,4}/;
         const coincidencia = texto.match(regex);
-        if (!coincidencia) throw new Error("No se encontró el rango.");
+        if (!coincidencia) throw new Error("Error");
         const [inicioStr, finStr] = coincidencia[0].split('-');
         const fInicio = parsearFechaZero(inicioStr, 8, 0);
         const fFin = parsearFechaZero(finStr, 0, 0);
         const hoy = new Date();
         if (hoy < fInicio) {
-          modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong> a las 08:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
+          modal.innerHTML = `<h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>El sistema abrirá el día:<br><strong>${inicioStr}</strong> a las 08:00 hs.</p><button class="btn" style="margin-top:20px" onclick="cerrarModal()">Entendido</button>`;
         } else if (hoy >= fFin) {
-          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
+          modal.innerHTML = `<h2>ETAPA FINALIZADA</h2><p>El período de inscripción cerró el día:<br><strong>${finStr}</strong></p><button class="btn" style="margin-top:20px" onclick="cerrarModal()">Volver</button>`;
         } else {
-          modal.innerHTML = `<span class="modal-emoji">✅</span><h2>INSCRIPCIONES HABILITADAS </h2><p>Ya podés elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
+          modal.innerHTML = `<h2>SISTEMA HABILITADO</h2><p>Ya podés completar tu inscripción.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a>`;
         }
       })
       .catch(() => {
-        modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>No se pudo verificar automáticamente.<br>Intenta ingresar desde aquí:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
+        modal.innerHTML = `<h2>AVISO</h2><p>No se pudo conectar con el servidor.<br>Intenta ingresar directamente:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a>`;
       });
     }
 
