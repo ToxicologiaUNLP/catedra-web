@@ -22,7 +22,6 @@
       background: var(--bg-gradient); background-attachment: fixed;
     }
     
-    /* Mensaje centrado y adaptado a móviles */
     .fecha-hoy {
       text-align: center;
       margin: 30px auto 10px auto;
@@ -83,12 +82,12 @@
       max-height: 600px;
       margin-top: 10px; margin-bottom: 10px;
     }
+    
     .subbtn {
-      display: block; width: 100%;
-      box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; box-sizing: border-box;
       padding: 12px 16px; margin: 6px 0;
       font-family: 'Montserrat', sans-serif;
-      font-size: 14px; font-weight: 600;
       color: var(--primary-dark);
       background-color: #eef4f5;
       border: 2px solid rgba(12, 131, 145, 0.3);
@@ -96,12 +95,17 @@
       cursor: pointer; text-decoration: none; text-align: center;
       transition: all 0.25s ease;
     }
+    .subbtn span.btn-text { font-size: 14px; font-weight: 700; }
+    .subbtn span.btn-date { font-size: 10px; font-weight: 600; opacity: 0.8; margin-top: 4px; line-height: 1.2; color: var(--primary-dark); }
+
     .subbtn:hover {
       background-color: var(--primary-dark);
       color: #fff;
       border-color: var(--primary-dark);
       transform: translateX(4px);
     }
+    .subbtn:hover span.btn-date { color: #fff; }
+
     .overlay {
       position: fixed; inset: 0;
       background: rgba(4, 84, 93, 0.96);
@@ -162,8 +166,14 @@
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
-      <button class="subbtn" onclick="validarAccesoCursada()">Comisión de Cursada</button>
-      <a class="subbtn" target="_blank" href="https://inscripcion-hosic-toxicologia.netlify.app/">Taller de Simulación (HoSiC)</a>
+      <button class="subbtn" onclick="validarAccesoCursada()">
+        <span class="btn-text">Comisión de Cursada</span>
+        <span class="btn-date" id="dateCursada">Cargando fechas...</span>
+      </button>
+      <a class="subbtn" target="_blank" href="https://inscripcion-hosic-toxicologia.netlify.app/">
+        <span class="btn-text">Taller de Simulación (HoSiC)</span>
+        <span class="btn-date" id="dateHoSiC">Cargando fechas...</span>
+      </a>
     </div>
     <button class="btn" onclick="toggleContacto()">Canales de Contacto</button>
     <div id="contactoBox" class="collapsible">
@@ -183,20 +193,19 @@
 
   <script>
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
+    const csvHoSiC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
     const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
 
     function actualizarCicloLectivo() {
       const hoy = new Date();
       const año = hoy.getFullYear();
       let mensaje = `CICLO LECTIVO ${año} | CURSADA CERRADA`;
-
       const bimestres = [
         { nombre: "1° BIMESTRE", inicio: new Date(año, 3, 20), fin: new Date(año, 5, 13) },
         { nombre: "2° BIMESTRE", inicio: new Date(año, 5, 15), fin: new Date(año, 7, 22) },
         { nombre: "3° BIMESTRE", inicio: new Date(año, 7, 24), fin: new Date(año, 9, 17) },
         { nombre: "4° BIMESTRE", inicio: new Date(año, 9, 19), fin: new Date(año, 11, 12) }
       ];
-
       for (let b of bimestres) {
         if (hoy >= b.inicio && hoy <= b.fin) {
           mensaje = `CICLO LECTIVO ${año} | ${b.nombre}`;
@@ -204,6 +213,30 @@
         }
       }
       document.getElementById('fechaHoy').textContent = mensaje;
+    }
+
+    async function precargarFechas() {
+      try {
+        const res1 = await fetch(csvURL + "&t=" + Date.now());
+        const txt1 = await res1.text();
+        const coinc1 = txt1.match(/\d{2}\/\d{2}\/\d{2,4}-\d{2}\/\d{2}\/\d{2,4}/);
+        if(coinc1) {
+          const [ini, fin] = coinc1[0].split('-');
+          document.getElementById('dateCursada').innerHTML = `Abre: ${ini} (08:00hs) <br> Cierra: ${fin} (00:00hs)`;
+        }
+        const res2 = await fetch(csvHoSiC + "&t=" + Date.now());
+        const csv2 = await res2.text();
+        const filas = csv2.trim().split("\n");
+        if(filas[1]) {
+            const dataH = filas[1].split(",");
+            const rangoH = dataH[5].replace(/"/g, '').trim(); 
+            const [iniH, finH] = rangoH.split('-');
+            document.getElementById('dateHoSiC').innerHTML = `Abre: ${iniH} (08:00hs) <br> Cierra: ${finH} (00:00hs)`;
+        }
+      } catch (e) {
+        document.getElementById('dateCursada').innerText = "Consultar al ingresar";
+        document.getElementById('dateHoSiC').innerText = "Consultar al ingresar";
+      }
     }
 
     function parsearFechaZero(str, hora, min) {
@@ -225,9 +258,8 @@
       .then(texto => {
         const regex = /\d{2}\/\d{2}\/\d{2,4}-\d{2}\/\d{2}\/\d{2,4}/;
         const coincidencia = texto.match(regex);
-        if (!coincidencia) throw new Error("No se encontró el rango de fechas.");
-        const randoFechas = coincidencia[0];
-        const [inicioStr, finStr] = randoFechas.split('-');
+        if (!coincidencia) throw new Error("No se encontró el rango.");
+        const [inicioStr, finStr] = coincidencia[0].split('-');
         const fInicio = parsearFechaZero(inicioStr, 8, 0);
         const fFin = parsearFechaZero(finStr, 0, 0);
         const hoy = new Date();
@@ -239,13 +271,14 @@
           modal.innerHTML = `<span class="modal-emoji">✅</span><h2>INSCRIPCIONES HABILITADAS </h2><p>Ya podés elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
         }
       })
-      .catch(err => {
+      .catch(() => {
         modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>No se pudo verificar automáticamente.<br>Intenta ingresar desde aquí:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
       });
     }
 
     function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
     actualizarCicloLectivo();
+    precargarFechas();
     
     function toggleInscripciones() { 
       const box = document.getElementById('inscripcionesBox');
@@ -253,19 +286,16 @@
       closeAll(); 
       if (!isVisible) box.classList.add('visible'); 
     }
-    
     function toggleContacto() { 
       const box = document.getElementById('contactoBox');
       const isVisible = box.classList.contains('visible');
       closeAll(); 
       if (!isVisible) box.classList.add('visible'); 
     }
-    
     function toggleDatos() { 
       const div = document.getElementById('datosCatedra');
       div.style.display = (div.style.display === 'block') ? 'none' : 'block'; 
     }
-    
     function closeAll() {
       document.getElementById('contactoBox').classList.remove('visible');
       document.getElementById('inscripcionesBox').classList.remove('visible');
