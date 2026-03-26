@@ -73,11 +73,10 @@
       filter: brightness(1.1);
     }
 
-    /* Estilo para el nuevo botón de ayuda */
     .btn-help {
       background: var(--help-color);
       box-shadow: 0 4px 12px rgba(242, 153, 74, 0.3);
-      color: #5e3a00; /* Texto oscuro para mejor contraste sobre naranja */
+      color: #5e3a00;
     }
     .btn-help:hover {
         box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
@@ -132,19 +131,23 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.4);
       display: flex; flex-direction: column; align-items: center;
     }
-    /* Estilo específico para el modal del video */
+
+    /* Ajustes específicos para el modal de video */
     .modal-video {
         max-width: 95%;
         padding: 15px;
-        background: #000;
+        background: #1a1a1a;
     }
     .video-container {
         position: relative;
         width: 100%;
-        aspect-ratio: 9 / 16; /* Proporción vertical */
+        max-width: 350px; 
+        max-height: 70vh; /* No supera el 70% del alto de pantalla en PC */
+        aspect-ratio: 9 / 16;
         background: #000;
         border-radius: 15px;
         overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     .video-container iframe {
         position: absolute;
@@ -172,14 +175,24 @@
       cursor: pointer; margin-top: 15px; width: auto;
       font-weight: 600; text-decoration: underline;
     }
-    /* Botón cerrar para el video */
+
+    /* Botón cerrar Video - Verde Institucional */
     .btn-close-video {
+        background: var(--primary);
         color: #fff;
-        margin-top: 10px;
+        margin-top: 15px;
+        padding: 10px 25px;
+        border-radius: 12px;
         text-decoration: none;
         font-family: 'Montserrat';
         font-weight: 700;
         cursor: pointer;
+        border: none;
+        transition: 0.3s;
+    }
+    .btn-close-video:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
     }
 
     .datos {
@@ -241,14 +254,10 @@
     const csvHoSiC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
     const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
 
-    // Función para abrir el video de ayuda
     function abrirVideoAyuda() {
         const overlay = document.getElementById('overlay');
         const modal = document.getElementById('modalContenido');
-        
-        // Limpiamos clases previas y agregamos la de video
         modal.className = "modal modal-video";
-        
         modal.innerHTML = `
             <div class="video-container">
                 <iframe src="https://drive.google.com/file/d/1D1DZxEvoE0li6gKdL-9_vrYT39of0bn8/preview" allow="autoplay"></iframe>
@@ -312,7 +321,7 @@
     function validarAccesoCursada() {
       const overlay = document.getElementById('overlay');
       const modal = document.getElementById('modalContenido');
-      modal.className = "modal"; // Reset clase por si venía de video
+      modal.className = "modal"; 
       modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando calendario...</p>`;
       overlay.style.display = 'flex';
 
@@ -341,7 +350,7 @@
 
     function cerrarModal() { 
         document.getElementById('overlay').style.display = 'none'; 
-        document.getElementById('modalContenido').innerHTML = ""; // Limpia el iframe al cerrar para detener el video
+        document.getElementById('modalContenido').innerHTML = ""; 
     }
     
     actualizarCicloLectivo();
