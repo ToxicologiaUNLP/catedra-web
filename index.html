@@ -11,6 +11,7 @@
       --primary: #2b828c;
       --primary-dark: #075f69;
       --accent: #15aabf;
+      --help-color: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
       --bg-gradient: linear-gradient(135deg, #064e57 0%, #2b828c 50%, #055e69 100%);
       --glass-bg: rgba(255, 255, 255, 0.94);
     }
@@ -71,6 +72,17 @@
       box-shadow: 0 8px 20px rgba(12, 140, 156, 0.4);
       filter: brightness(1.1);
     }
+
+    /* Estilo para el nuevo botón de ayuda */
+    .btn-help {
+      background: var(--help-color);
+      box-shadow: 0 4px 12px rgba(242, 153, 74, 0.3);
+      color: #5e3a00; /* Texto oscuro para mejor contraste sobre naranja */
+    }
+    .btn-help:hover {
+        box-shadow: 0 8px 20px rgba(242, 153, 74, 0.4);
+    }
+
     .collapsible {
       width: 100%; max-height: 0;
       overflow: hidden;
@@ -120,6 +132,26 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.4);
       display: flex; flex-direction: column; align-items: center;
     }
+    /* Estilo específico para el modal del video */
+    .modal-video {
+        max-width: 95%;
+        padding: 15px;
+        background: #000;
+    }
+    .video-container {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 9 / 16; /* Proporción vertical */
+        background: #000;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .video-container iframe {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        border: none;
+    }
+
     .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
     .modal h2 { color: var(--primary-dark); margin: 10px 0; font-family: 'Montserrat'; font-weight: 700; }
     .modal p { color: #444; font-size: 15px; line-height: 1.6; margin-bottom: 25px; }
@@ -140,6 +172,16 @@
       cursor: pointer; margin-top: 15px; width: auto;
       font-weight: 600; text-decoration: underline;
     }
+    /* Botón cerrar para el video */
+    .btn-close-video {
+        color: #fff;
+        margin-top: 10px;
+        text-decoration: none;
+        font-family: 'Montserrat';
+        font-weight: 700;
+        cursor: pointer;
+    }
+
     .datos {
       margin-top: 15px; font-size: 14px; color: #444; line-height: 1.6;
       display: none; text-align: center; padding: 15px;
@@ -163,6 +205,9 @@
 
   <main>
     <img src="logo.png" alt="Logo" class="logo">
+    
+    <button class="btn btn-help" onclick="abrirVideoAyuda()">¿Cómo usar esta página?</button>
+    
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencia y Calificaciones</a>
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
@@ -195,6 +240,23 @@
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
     const csvHoSiC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
     const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
+
+    // Función para abrir el video de ayuda
+    function abrirVideoAyuda() {
+        const overlay = document.getElementById('overlay');
+        const modal = document.getElementById('modalContenido');
+        
+        // Limpiamos clases previas y agregamos la de video
+        modal.className = "modal modal-video";
+        
+        modal.innerHTML = `
+            <div class="video-container">
+                <iframe src="https://drive.google.com/file/d/1D1DZxEvoE0li6gKdL-9_vrYT39of0bn8/preview" allow="autoplay"></iframe>
+            </div>
+            <button class="btn-close-video" onclick="cerrarModal()">Cerrar Tutorial</button>
+        `;
+        overlay.style.display = 'flex';
+    }
 
     function actualizarCicloLectivo() {
       const hoy = new Date();
@@ -250,6 +312,7 @@
     function validarAccesoCursada() {
       const overlay = document.getElementById('overlay');
       const modal = document.getElementById('modalContenido');
+      modal.className = "modal"; // Reset clase por si venía de video
       modal.innerHTML = `<span class="modal-emoji">⚙️</span><h2>Verificando...</h2><p>Consultando calendario...</p>`;
       overlay.style.display = 'flex';
 
@@ -276,7 +339,11 @@
       });
     }
 
-    function cerrarModal() { document.getElementById('overlay').style.display = 'none'; }
+    function cerrarModal() { 
+        document.getElementById('overlay').style.display = 'none'; 
+        document.getElementById('modalContenido').innerHTML = ""; // Limpia el iframe al cerrar para detener el video
+    }
+    
     actualizarCicloLectivo();
     precargarFechas();
     
