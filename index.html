@@ -130,6 +130,14 @@
       width: 100%; text-align: center;
       box-shadow: 0 20px 50px rgba(0,0,0,0.4);
       display: flex; flex-direction: column; align-items: center;
+      transition: all 0.4s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+
+    /* ESTILO NUEVO: Modal grande para el Forms */
+    .modal-expanded {
+      max-width: 650px !important;
+      padding: 15px !important;
     }
 
     .modal-video {
@@ -152,6 +160,16 @@
         position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
         border: none;
+    }
+
+    /* ESTILO NUEVO: Contenedor del Formulario */
+    .iframe-container {
+      width: 100%;
+      height: 70vh;
+      border-radius: 15px;
+      border: 1px solid #ddd;
+      overflow: hidden;
+      margin-top: 10px;
     }
 
     .modal-emoji { font-size: 55px; display: block; margin-bottom: 15px; }
@@ -205,7 +223,6 @@
       text-align: center; font-weight: 500; padding: 20px 0;
     }
 
-    /* Estilo del contador circular */
     .timer-circle {
       font-size: 40px; 
       font-weight: bold; 
@@ -264,7 +281,8 @@
   <script>
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
     const csvHoSiC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
-    const formsURL = "https://forms.gle/nCxqNzoqHYv2rmHi6";
+    // EL LINK DE EMBED QUE ME PASASTE:
+    const formsEmbedURL = "https://docs.google.com/forms/d/e/1FAIpQLScJOZMLHz7K6Cce19d9ZizZVDIeiVvexIJxas_gL-XoEa08DA/viewform?embedded=true";
 
     function abrirVideoAyuda() {
         const overlay = document.getElementById('overlay');
@@ -330,7 +348,6 @@
       return new Date(year, parts[1] - 1, parts[0], hora, min, 0);
     }
 
-    // --- FUNCIÓN DE ACCESO MODIFICADA CON SALA DE ESPERA ---
     function validarAccesoCursada() {
       const overlay = document.getElementById('overlay');
       const modal = document.getElementById('modalContenido');
@@ -355,54 +372,60 @@
         } else if (hoy >= fFin) {
           modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
-          // Si está habilitado, activamos la cola de espera aleatoria
           iniciarColaEspera(modal);
         }
       })
       .catch(() => {
-        modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>No se pudo verificar automáticamente.<br>Intenta ingresar desde aquí:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
+        modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>Hubo un problema de conexión. Por favor, intenta de nuevo.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
       });
     }
 
     function iniciarColaEspera(modal) {
-      // Generamos un tiempo aleatorio entre 15 y 30 segundos
+      // TIEMPO ALEATORIO 20-40 SEGUNDOS (TU PEDIDO)
       let tiempo = Math.floor(Math.random() * (40 - 20 + 1)) + 20;
       
-      const actualizarModal = () => {
+      const render = () => {
         modal.innerHTML = `
           <span class="modal-emoji">⏳</span>
           <h2>SALA DE ESPERA VIRTUAL</h2>
-          <p>Para asegurar que tu inscripción se genere correctamente, habilitamos los accesos de forma escalonada.</p>
+          <p>Para asegurar tu inscripción, habilitamos el acceso por orden de ingreso a la página.</p>
           <div class="timer-circle">${tiempo}</div>
           <p style="font-size: 13px; color: #666; padding: 0 10px;">
-            Estás en la fila. Cuando el contador llegue a cero, se habilitará tu ingreso.
+            Tu turno se activará automáticamente al llegar a cero.
           </p>
           <button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>
         `;
       };
 
-      actualizarModal();
+      render();
 
       const contador = setInterval(() => {
         tiempo--;
         if (tiempo <= 0) {
           clearInterval(contador);
-          modal.innerHTML = `
-            <span class="modal-emoji">✅</span>
-            <h2>¡TU TURNO ESTÁ LISTO!</h2>
-            <p>Ya podés completar tu inscripción.</p>
-            <a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">IR AL FORMULARIO</a>
-            <p style="font-size: 11px; margin-top: 15px; color: #888;">Si no completás la inscripción ahora, deberás esperar de nuevo.</p>
-          `;
+          abrirFormularioEmbebido(modal);
         } else {
-          actualizarModal();
+          render();
         }
       }, 1000);
+    }
+
+    function abrirFormularioEmbebido(modal) {
+      // Agranda el modal para que entre el Forms
+      modal.classList.add('modal-expanded');
+      modal.innerHTML = `
+        <h2 style="font-size: 18px; margin: 10px 0;">Formulario de Inscripción</h2>
+        <div class="iframe-container">
+           <iframe src="${formsEmbedURL}" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+        </div>
+        <button class="btn" onclick="cerrarModal()" style="margin-top:15px; background:var(--primary-dark)">Finalizar y Salir</button>
+      `;
     }
 
     function cerrarModal() { 
         document.getElementById('overlay').style.display = 'none'; 
         document.getElementById('modalContenido').innerHTML = ""; 
+        document.getElementById('modalContenido').classList.remove('modal-expanded');
     }
     
     actualizarCicloLectivo();
