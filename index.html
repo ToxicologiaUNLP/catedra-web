@@ -132,7 +132,6 @@
       display: flex; flex-direction: column; align-items: center;
     }
 
-    /* Ajustes específicos para el modal de video */
     .modal-video {
         max-width: 95%;
         padding: 15px;
@@ -142,7 +141,7 @@
         position: relative;
         width: 100%;
         max-width: 350px; 
-        max-height: 70vh; /* No supera el 70% del alto de pantalla en PC */
+        max-height: 70vh;
         aspect-ratio: 9 / 16;
         background: #000;
         border-radius: 15px;
@@ -176,7 +175,6 @@
       font-weight: 600; text-decoration: underline;
     }
 
-    /* Botón cerrar Video - Verde Institucional */
     .btn-close-video {
         background: var(--primary);
         color: #fff;
@@ -205,6 +203,20 @@
     footer {
       width: 100%; font-size: 12px; color: rgba(255,255,255,0.6);
       text-align: center; font-weight: 500; padding: 20px 0;
+    }
+
+    /* Estilo del contador circular */
+    .timer-circle {
+      font-size: 40px; 
+      font-weight: bold; 
+      color: var(--primary); 
+      margin: 20px 0; 
+      border: 4px solid var(--primary); 
+      width: 80px; 
+      height: 80px; 
+      line-height: 80px; 
+      border-radius: 50%; 
+      display: inline-block;
     }
   </style>
 </head>
@@ -318,6 +330,7 @@
       return new Date(year, parts[1] - 1, parts[0], hora, min, 0);
     }
 
+    // --- FUNCIÓN DE ACCESO MODIFICADA CON SALA DE ESPERA ---
     function validarAccesoCursada() {
       const overlay = document.getElementById('overlay');
       const modal = document.getElementById('modalContenido');
@@ -331,21 +344,60 @@
         const regex = /\d{2}\/\d{2}\/\d{2,4}-\d{2}\/\d{2}\/\d{2,4}/;
         const coincidencia = texto.match(regex);
         if (!coincidencia) throw new Error("No se encontró el rango.");
+        
         const [inicioStr, finStr] = coincidencia[0].split('-');
         const fInicio = parsearFechaZero(inicioStr, 8, 0);
         const fFin = parsearFechaZero(finStr, 0, 0);
         const hoy = new Date();
+
         if (hoy < fInicio) {
           modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong> a las 08:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
         } else if (hoy >= fFin) {
           modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
-          modal.innerHTML = `<span class="modal-emoji">✅</span><h2>INSCRIPCIONES HABILITADAS </h2><p>Ya podés elegir tu comisión.</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Ir al Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>`;
+          // Si está habilitado, activamos la cola de espera aleatoria
+          iniciarColaEspera(modal);
         }
       })
       .catch(() => {
         modal.innerHTML = `<span class="modal-emoji">⚠️</span><h2>AVISO</h2><p>No se pudo verificar automáticamente.<br>Intenta ingresar desde aquí:</p><a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">Abrir Formulario</a><button class="btn-modal-back" onclick="cerrarModal()">Cerrar</button>`;
       });
+    }
+
+    function iniciarColaEspera(modal) {
+      // Generamos un tiempo aleatorio entre 15 y 30 segundos
+      let tiempo = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
+      
+      const actualizarModal = () => {
+        modal.innerHTML = `
+          <span class="modal-emoji">⏳</span>
+          <h2>SALA DE ESPERA VIRTUAL</h2>
+          <p>Para asegurar que tu inscripción se genere correctamente, habilitamos los accesos de forma escalonada.</p>
+          <div class="timer-circle">${tiempo}</div>
+          <p style="font-size: 13px; color: #666; padding: 0 10px;">
+            Estás en la fila. Cuando el contador llegue a cero, se habilitará tu ingreso.
+          </p>
+          <button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>
+        `;
+      };
+
+      actualizarModal();
+
+      const contador = setInterval(() => {
+        tiempo--;
+        if (tiempo <= 0) {
+          clearInterval(contador);
+          modal.innerHTML = `
+            <span class="modal-emoji">✅</span>
+            <h2>¡TU TURNO ESTÁ LISTO!</h2>
+            <p>Ya podés completar tu inscripción.</p>
+            <a class="btn-modal-action" href="${formsURL}" target="_blank" onclick="cerrarModal()">IR AL FORMULARIO</a>
+            <p style="font-size: 11px; margin-top: 15px; color: #888;">Si no completás la inscripción ahora, deberás esperar de nuevo.</p>
+          `;
+        } else {
+          actualizarModal();
+        }
+      }, 1000);
     }
 
     function cerrarModal() { 
