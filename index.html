@@ -410,7 +410,7 @@
       }, 1000);
     }
 
-    function abrirFormularioEmbebido(modal) {
+   function abrirFormularioEmbebido(modal) {
       // Agranda el modal para que entre el Forms
       modal.classList.add('modal-expanded');
       modal.innerHTML = `
@@ -423,7 +423,7 @@
              frameborder="0" 
              marginheight="0" 
              marginwidth="0"
-             sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox allow-same-origin">
+             sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-top-navigation allow-top-navigation-by-user-activation">
              Cargando…
            </iframe>
         </div>
