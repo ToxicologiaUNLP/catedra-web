@@ -415,18 +415,21 @@
       modal.classList.add('modal-expanded');
       modal.innerHTML = `
         <h2 style="font-size: 18px; margin: 10px 0;">Formulario de Inscripción</h2>
-        <div class="iframe-container">
-           <iframe 
-             src="${formsEmbedURL}" 
-             width="100%" 
-             height="100%" 
-             frameborder="0" 
-             marginheight="0" 
-             marginwidth="0"
-             sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-top-navigation allow-top-navigation-by-user-activation">
-             Cargando…
-           </iframe>
+        
+        <div style="background: #fff3cd; padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ffeeba; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+          <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: #856404;">
+            ⚠️ IMPORTANTE: Al finalizar el envío, obtené tu comprobante aquí:
+          </p>
+          <a href="https://goo.su/YJMjtz" target="_blank" rel="noopener noreferrer" 
+             style="display: inline-block; background: #2b828c; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px;">
+            DESCARGAR COMPROBANTE 🧾
+          </a>
         </div>
+
+        <div class="iframe-container">
+           <iframe src="${formsEmbedURL}" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+        </div>
+        
         <button class="btn" onclick="cerrarModal()" style="margin-top:15px; background:var(--primary-dark)">Finalizar y Salir</button>
       `;
     }
