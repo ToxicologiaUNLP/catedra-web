@@ -370,6 +370,24 @@
         if (hoy < fInicio) {
           modal.innerHTML = `<span class="modal-emoji">⏳</span><h2>INSCRIPCIONES PRÓXIMAMENTE</h2><p>La inscripción abrirá el día:<br><strong>${inicioStr}</strong> a las 08:00 hs.</p><button class="btn-modal-back" onclick="cerrarModal()">Cerrar ventana</button>`;
         } else if (hoy >= fFin) {
+          modal.innerHTML = `
+            <span class="modal-emoji">🏁</span>
+            <h2>ETAPA FINALIZADA</h2>
+            <p>El período cerró el día:<br><strong>${finStr}</strong></p>
+            
+            <div style="background: #eef4f5; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--primary); width: 100%; box-sizing: border-box;">
+              <p style="margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: var(--primary-dark);">
+                ¿YA TE INSCRIBISTE?
+              </p>
+              <a href="https://goo.su/YJMjtz" target="_blank" rel="noopener noreferrer" 
+                 style="display: inline-block; background: var(--primary); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                DESCARGAR COMPROBANTE 🧾
+              </a>
+            </div>
+
+            <button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>
+          `;
+        } else {
           modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
           iniciarColaEspera(modal);
