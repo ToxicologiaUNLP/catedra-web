@@ -134,7 +134,6 @@
       max-height: 90vh; overflow-y: auto;
     }
 
-    /* ESTILO NUEVO: Modal grande para el Forms */
     .modal-expanded {
       max-width: 650px !important;
       padding: 15px !important;
@@ -162,7 +161,6 @@
         border: none;
     }
 
-    /* ESTILO NUEVO: Contenedor del Formulario */
     .iframe-container {
       width: 100%;
       height: 70vh;
@@ -281,7 +279,6 @@
   <script>
     const csvURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVGN4hiXvWv575TNG-VQTdQPYU0sCluwD-wWjegpzhmr-iEneswO-h8dnlfnEdTiReiKxcb_JtfDWT/pub?output=csv";
     const csvHoSiC = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl056VY6Tv-hIeNjQrcElL4zusVkjizmfO8YJLqe6IhGwk4eYY3D1SeqpUFIP9RnESYuNGsc_sn7J3/pub?gid=0&single=true&output=csv";
-    // EL LINK DE EMBED QUE ME PASASTE:
     const formsEmbedURL = "https://docs.google.com/forms/d/e/1FAIpQLScJOZMLHz7K6Cce19d9ZizZVDIeiVvexIJxas_gL-XoEa08DA/viewform?embedded=true";
 
     function abrirVideoAyuda() {
@@ -374,21 +371,14 @@
             <span class="modal-emoji">🏁</span>
             <h2>ETAPA FINALIZADA</h2>
             <p>El período cerró el día:<br><strong>${finStr}</strong></p>
-            
             <div style="background: #eef4f5; padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--primary); width: 100%; box-sizing: border-box;">
-              <p style="margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: var(--primary-dark);">
-                ¿YA TE INSCRIBISTE?
-              </p>
+              <p style="margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: var(--primary-dark);">¿YA TE INSCRIBISTE?</p>
               <a href="https://goo.su/YJMjtz" target="_blank" rel="noopener noreferrer" 
                  style="display: inline-block; background: var(--primary); color: white; padding: 10px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 DESCARGAR COMPROBANTE 🧾
               </a>
             </div>
-
-            <button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>
-          `;
-        } else {
-          modal.innerHTML = `<span class="modal-emoji">🏁</span><h2>ETAPA FINALIZADA</h2><p>El período cerró el día:<br><strong>${finStr}</strong></p><button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
+            <button class="btn-modal-back" onclick="cerrarModal()">Volver al menú</button>`;
         } else {
           iniciarColaEspera(modal);
         }
@@ -399,24 +389,18 @@
     }
 
     function iniciarColaEspera(modal) {
-      // TIEMPO ALEATORIO 20-40 SEGUNDOS (TU PEDIDO)
       let tiempo = Math.floor(Math.random() * (40 - 20 + 1)) + 20;
-      
       const render = () => {
         modal.innerHTML = `
           <span class="modal-emoji">⏳</span>
           <h2>SALA DE ESPERA VIRTUAL</h2>
           <p>Para asegurar tu inscripción, habilitamos el acceso por orden de ingreso a la página.</p>
           <div class="timer-circle">${tiempo}</div>
-          <p style="font-size: 13px; color: #666; padding: 0 10px;">
-            Tu turno se activará automáticamente al llegar a cero.
-          </p>
+          <p style="font-size: 13px; color: #666; padding: 0 10px;">Tu turno se activará automáticamente al llegar a cero.</p>
           <button class="btn-modal-back" onclick="cerrarModal()">Cancelar</button>
         `;
       };
-
       render();
-
       const contador = setInterval(() => {
         tiempo--;
         if (tiempo <= 0) {
@@ -428,26 +412,20 @@
       }, 1000);
     }
 
-   function abrirFormularioEmbebido(modal) {
-      // Agranda el modal para que entre el Forms
+    function abrirFormularioEmbebido(modal) {
       modal.classList.add('modal-expanded');
       modal.innerHTML = `
         <h2 style="font-size: 18px; margin: 10px 0;">Formulario de Inscripción</h2>
-        
         <div style="background: #fff3cd; padding: 12px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #ffeeba; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-          <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: #856404;">
-            AL FINALIZAR, OBTENÉ TU COMPROBANTE AQUÍ 
-          </p>
+          <p style="margin: 0 0 8px 0; font-size: 13px; font-weight: bold; color: #856404;">AL FINALIZAR, OBTENÉ TU COMPROBANTE AQUÍ</p>
           <a href="https://goo.su/YJMjtz" target="_blank" rel="noopener noreferrer" 
              style="display: inline-block; background: #2b828c; color: white; padding: 8px 15px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px;">
             DESCARGAR COMPROBANTE 🧾
           </a>
         </div>
-
         <div class="iframe-container">
            <iframe src="${formsEmbedURL}" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
         </div>
-        
         <button class="btn" onclick="cerrarModal()" style="margin-top:15px; background:var(--primary-dark)">Finalizar y Salir</button>
       `;
     }
