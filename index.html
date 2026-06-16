@@ -40,7 +40,7 @@
     main {
       background: var(--glass-bg);
       backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 24px;
       width: 90%; max-width: 400px;
       padding: 35px; text-align: center;
@@ -116,6 +116,28 @@
       transform: translateX(4px);
     }
     .subbtn:hover span.btn-date { color: #fff; }
+
+    /* Estilos para el rectángulo pequeño del comprobante */
+    .btn-comprobante-directo {
+      display: none;
+      width: 90%;
+      margin: 8px auto 2px auto;
+      padding: 6px 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff !important;
+      background: #e67e22;
+      border-radius: 6px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
+    .btn-comprobante-directo:hover {
+      background: #d35400;
+      transform: scale(1.02);
+    }
 
     .overlay {
       position: fixed; inset: 0;
@@ -251,10 +273,16 @@
     <a class="btn" href="https://notas-toxicologia-unlp.netlify.app/">Asistencias y Calificaciones</a>
     <button class="btn" onclick="toggleInscripciones()">Inscripciones</button>
     <div id="inscripcionesBox" class="collapsible">
-      <button class="subbtn" onclick="validarAccesoCursada()">
-        <span class="btn-text">Comisión de Cursada</span>
-        <span class="btn-date" id="dateCursada">Cargando fechas...</span>
-      </button>
+      
+      <div class="subbtn" style="cursor: default;" onclick="if(event.target.id !== 'btnComprobanteCursada') validarAccesoCursada();">
+        <span class="btn-text" style="cursor: pointer;">Comisión de Cursada</span>
+        <span class="btn-date" id="dateCursada" style="cursor: pointer;">Cargando fechas...</span>
+        
+        <a id="btnComprobanteCursada" class="btn-comprobante-directo" target="_blank" href="https://sites.google.com/view/comprobantestoxicologia/p%C3%A1gina-principal">
+          Descargar mi comprobante 🧾
+        </a>
+      </div>
+
       <a class="subbtn" target="_blank" href="https://inscripcion-hosic-toxicologia.netlify.app/">
         <span class="btn-text">Taller de Simulación (HoSiC)</span>
         <span class="btn-date" id="dateHoSiC">Cargando fechas...</span>
@@ -321,6 +349,13 @@
         if(coinc1) {
           const [ini, fin] = coinc1[0].split('-');
           document.getElementById('dateCursada').innerHTML = `Abre: ${ini} (08:00hs) <br> Cierra: ${fin} (00:00hs)`;
+          
+          // Habilitación automática basada en día y hora de apertura
+          const fInicio = parsearFechaZero(ini, 8, 0);
+          const hoy = new Date();
+          if (hoy >= fInicio) {
+            document.getElementById('btnComprobanteCursada').style.display = "block";
+          }
         }
         const res2 = await fetch(csvHoSiC + "&t=" + Date.now());
         const csv2 = await res2.text();
